@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Configurações Globais (Reset e Fundo)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Gradiente suave que lembra o ambiente clínico/tecnológico */
+    background: linear-gradient(135deg, #eef5f9 0%, #dbeaf5 100%);
+}
+
+/* ==========================================================================
+   Card de Login (Container)
+   ========================================================================== */
+.container {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    /* Sombra suave para dar profundidade sem parecer pesado */
+    box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+    /* Detalhe superior em azul hospitalar para identidade visual */
+    border-top: 6px solid #0077b6;
+}
+
+/* Título */
+h2 {
+    color: #1e3d59;
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   Campos de Entrada (Inputs)
+   ========================================================================== */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1.5px solid #d1dbed;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333333;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Efeito ao clicar/focar no input */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background-color: #ffffff;
+    border-color: #0096c7;
+    /* Brilho azul suave ao redor do input */
+    box-shadow: 0 0 0 4px rgba(0, 150, 199, 0.15);
+}
+
+/* Customização do texto de placeholder (instrução interna) */
+input::placeholder {
+    color: #a0aec0;
+}
+
+/* ==========================================================================
+   Botão de Ação
+   ========================================================================== */
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #0077b6; /* Azul Clínico Principal */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 5px;
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    background-color: #005f96; /* Azul um pouco mais escuro */
+}
+
+/* Efeito ao clicar */
+button:active {
+    transform: scale(0.98);
+}

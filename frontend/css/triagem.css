@@ -1,0 +1,147 @@
+/* ==========================================================================
+   Configurações Globais (Reset e Fundo)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte moderna hospitalar */
+}
+
+body {
+    background-color: #f0f4f8; /* Tom suave de azul clínico */
+    color: #333333;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   Container Principal (Formulário)
+   ========================================================================== */
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 600px; /* Reduzido para ficar mais elegante e centralizado */
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); /* Sombra suave profissional */
+    border-top: 6px solid #0096c7; /* Linha superior de identidade visual */
+}
+
+h2 {
+    color: #1e3d59;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   Campos de Entrada (Inputs, Select e Textarea)
+   ========================================================================== */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e0;
+    font-size: 16px;
+    color: #2d3748;
+    background-color: #f8fafc;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Efeito de Foco nos elementos */
+input:focus,
+select:focus,
+textarea:focus {
+    background-color: #ffffff;
+    border-color: #0096c7;
+    box-shadow: 0 0 0 3px rgba(0, 150, 199, 0.15);
+}
+
+textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+/* ==========================================================================
+   Botão Salvar
+   ========================================================================== */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 25px;
+    background-color: #0077b6;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #005f96;
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
+/* ==========================================================================
+   Faixas / Alertas de Resultado da Classificação
+   ========================================================================== */
+#resultado {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    display: none; /* Só aparece quando possuir uma classe aplicada */
+    text-transform: uppercase;
+}
+
+/* Exibe o bloco caso tenha qualquer uma das classes de risco */
+#resultado.verde,
+#resultado.amarelo,
+#resultado.vermelho {
+    display: block;
+}
+
+.verde {
+    background-color: #def7ec;
+    color: #03543f;
+    border: 1px solid #84e1bc;
+}
+
+.amarelo {
+    background-color: #fefcbf;
+    color: #744210;
+    border: 1px solid #faf089;
+}
+
+.vermelho {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #f8b4b4;
+}
+
+/* Mantido a classe card solicitada */
+.card {
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}

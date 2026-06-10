@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> <link rel="stylesheet" href="css/atendimento.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Atendimento</h2> 
+
+        <input id="nome" placeholder="nome">
+          <input id="cpf" placeholder="CPF">
+
+          <select  id="tipo">
+
+            <option >convenio</option>
+            
+              <option >particular</option>
+
+          </select>
+
+          <input type="file" id="foto">
+
+          <button onclick="cadastrar()">cadastrar</button> 
+      </div> 
+      <script>
+        function cadastrar(){
+            fetch("http://localhost:3000/atendimento",{ 
+                method:"POST", 
+                headers:{"Costent-Type":"application/json"}, 
+                body: JSON.stringify({
+                 nome : nome.value, 
+                 tipo: tipo.value   
+                })
+
+            }); 
+            alert("Paciente enviado para triagem"); 
+        } 
+
+      </script>
+    </body>
+    </html>

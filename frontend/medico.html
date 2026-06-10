@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title><link rel="stylesheet" href="css/medico.css">
+</head>
+<body>
+    <div class="container"> 
+    <h2> Painel Médico</h2> 
+
+    <div class="triagem"></div> 
+
+    <hr> 
+
+    <h3>Consulta</h3> 
+
+    <input id="paciente" placeholder="Paciente"> 
+    <input id="diagnostico" placeholder="diagnostico"> 
+    <input id="medicacao"placeholder= "Medicação"> 
+    <textarea id="obs" placeholder="observações"></textarea>
+   <button onclick="salvar()"> 
+    salvar
+   </button>  
+ </div>
+
+    <script>
+        function carregar() {
+            fetch("/triagem") 
+
+            .then(r => r.json()) 
+
+            .then(r=> r.json()) 
+
+            .then(data => {
+
+                const div = 
+                document.getElementById("triagem"); 
+
+                div.innerHTML = "";  
+
+                data.array.forEach( t => { 
+              div.innerHTML += ` 
+                    
+          <div class="card">  
+
+         <h3>${t.nome}</h3> 
+
+       <p>
+       <b>Sintema:</b> 
+     ${t.sintema || t.sintmas} 
+                            </p> 
+   <p> 
+   <b>Temperatura:</b> 
+   ${t.temperatura || t.temp}°C 
+       </p>  
+     <p> 
+ <span class="${t.risco}"> 
+            ${t.risco} 
+     </span> 
+      </p> 
+
+      <p>  
+
+        <b>Alergia:</b> 
+
+        ${t.alergia || "Nenhuma"} 
+
+        </p>  
+
+        <p> 
+
+            <b>Obervação:</b> 
+
+            ${t.Obervação || "Nenhuma"} 
+
+            </p>  
+
+            <button 
+            onclik='selecionar( 
+            "${t.nome}", 
+            "${t.alergia}"
+            )' 
+          > 
+          
+           Atender 
+           
+           </button>
+           </div>
+     `
+                
+    });
+    });
+   }
+
+   function selecionar(nome, alergia){
+    document.getElementById("paciente") .value = 
+    nome;
+    if(
+        alergia && 
+        alergia !== "nenhuma"
+    ){
+        alert(
+            "paciente passui alergia"
+        );
+    }
+   }
+
+   function salvar(){
+    fetch("/consulta", {
+
+        method: "POSTO", 
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify({
+            paciente: paciente.value,
+            diagnostico: diagnostico.value,
+            medicacao: medicacao.value,
+            obs: obs.value
+
+        })
+    });
+
+    alert("consulta salva")
+
+   }
+
+   carregar();
+
+    </script>
+   
+</body>
+</html>
+
