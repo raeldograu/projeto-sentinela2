@@ -39,19 +39,13 @@
                 }
                 return response.json();
             })
+                .the(r => r.json())
             .then(data => {
 
-                if (data.tipo === "triagem") {
-                    window.location.href = "triagem.html";
-                }
-
-                if (data.tipo === "medico") {
-                    window.location.href = "medico.html";
-                }
-
-                if (data.tipo === "atendimento") {
-                    window.location.href = "atendimento.html";
-                }
+                if (data.tipo === "triagem") location.href = "triagem.html";
+                if (data.tipo === "medico")location.href = "medico.html";
+                if (data.tipo === "atendimento")location.href = "atendimento.html";
+                
             })
             .catch(error => {
                 alert(error.message);
