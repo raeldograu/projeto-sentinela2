@@ -147,4 +147,9 @@ app.get("/medicacoes", (req, res) => {
 
 /* EXPORTAÇÃO PARA VERCEL */
 
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => { console.log(`Porta ${PORT}`)
+    ;});
+
 module.exports = app;
