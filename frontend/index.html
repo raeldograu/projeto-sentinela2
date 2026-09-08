@@ -1,23 +1,14 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login Hospital</title>
 
-    <link
-        rel="stylesheet"
-        href="css/index.css"
-    >
-
+    <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
@@ -47,68 +38,53 @@
 
     <script>
 
-        function login() {
+        async function login() {
 
             const usuario =
-                document
-                    .getElementById("usuario")
-                    .value
-                    .trim();
+                document.getElementById("usuario").value.trim();
 
             const senha =
-                document
-                    .getElementById("senha")
-                    .value
-                    .trim();
+                document.getElementById("senha").value.trim();
 
-
-            // Verifica os campos
 
             if (!usuario || !senha) {
 
-                alert(
-                    "Digite o usuário e a senha."
-                );
+                alert("Digite o usuário e a senha.");
 
                 return;
             }
 
 
-            fetch("/login", {
+            try {
 
-                method: "POST",
+                const response = await fetch("/login", {
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+                    method: "POST",
 
-                body: JSON.stringify({
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                    usuario: usuario,
-                    senha: senha
+                    body: JSON.stringify({
+                        usuario: usuario,
+                        senha: senha
+                    })
 
-                })
-
-            })
+                });
 
 
-            .then(response => {
+                const data = await response.json();
+
 
                 if (!response.ok) {
 
                     throw new Error(
-                        "Usuário ou senha inválidos"
+                        data.erro ||
+                        "Usuário ou senha inválidos."
                     );
 
                 }
 
-                return response.json();
-
-            })
-
-
-            .then(data => {
 
                 console.log(
                     "Login realizado:",
@@ -116,9 +92,7 @@
                 );
 
 
-                // ============================
                 // REDIRECIONAMENTO
-                // ============================
 
                 if (data.tipo === "triagem") {
 
@@ -144,26 +118,25 @@
                 else {
 
                     alert(
-                        "Tipo de usuário não reconhecido."
+                        "Tipo de usuário inválido."
                     );
 
                 }
 
-            })
 
-
-            .catch(error => {
+            } catch (error) {
 
                 console.error(
-                    "Erro no login:",
+                    "Erro:",
                     error
                 );
 
                 alert(
+                    "Erro ao conectar com o servidor.\n\n" +
                     error.message
                 );
 
-            });
+            }
 
         }
 
@@ -172,4 +145,4 @@
 </body>
 
 </html>
-
+```
