@@ -1,58 +1,175 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Login Hospital</title>
-    <link rel="stylesheet" href="css/index.css">
+
+    <link
+        rel="stylesheet"
+        href="css/index.css"
+    >
+
 </head>
+
 <body>
 
     <div class="container">
+
         <h2>Sistema Hospitalar</h2>
 
-        <input type="text" id="usuario" placeholder="Usuário">
-        <input type="password" id="senha" placeholder="Senha">
+        <input
+            type="text"
+            id="usuario"
+            placeholder="Usuário"
+        >
 
-        <button onclick="login()">Entrar</button>
+        <input
+            type="password"
+            id="senha"
+            placeholder="Senha"
+        >
+
+        <button onclick="login()">
+            Entrar
+        </button>
+
     </div>
 
+
     <script>
+
         function login() {
 
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
+            const usuario =
+                document
+                    .getElementById("usuario")
+                    .value
+                    .trim();
+
+            const senha =
+                document
+                    .getElementById("senha")
+                    .value
+                    .trim();
+
+
+            // Verifica os campos
+
+            if (!usuario || !senha) {
+
+                alert(
+                    "Digite o usuário e a senha."
+                );
+
+                return;
+            }
+
 
             fetch("/login", {
+
                 method: "POST",
+
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type":
+                        "application/json"
                 },
+
                 body: JSON.stringify({
-                    usuario,
-                    senha
+
+                    usuario: usuario,
+                    senha: senha
+
                 })
+
             })
+
+
             .then(response => {
+
                 if (!response.ok) {
-                    throw new Error("Usuário ou senha inválidos");
+
+                    throw new Error(
+                        "Usuário ou senha inválidos"
+                    );
+
                 }
+
                 return response.json();
+
             })
-                .the(r => r.json())
+
+
             .then(data => {
 
-                if (data.tipo === "triagem") location.href = "triagem.html";
-                if (data.tipo === "medico")location.href = "medico.html";
-                if (data.tipo === "atendimento")location.href = "atendimento.html";
-                
+                console.log(
+                    "Login realizado:",
+                    data
+                );
+
+
+                // ============================
+                // REDIRECIONAMENTO
+                // ============================
+
+                if (data.tipo === "triagem") {
+
+                    window.location.href =
+                        "/triagem.html";
+
+                }
+
+                else if (data.tipo === "medico") {
+
+                    window.location.href =
+                        "/medico.html";
+
+                }
+
+                else if (data.tipo === "atendimento") {
+
+                    window.location.href =
+                        "/atendimento.html";
+
+                }
+
+                else {
+
+                    alert(
+                        "Tipo de usuário não reconhecido."
+                    );
+
+                }
+
             })
+
+
             .catch(error => {
-                alert(error.message);
-                console.error(error);
+
+                console.error(
+                    "Erro no login:",
+                    error
+                );
+
+                alert(
+                    error.message
+                );
+
             });
+
         }
+
     </script>
 
 </body>
+
 </html>
+
