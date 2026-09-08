@@ -20,10 +20,12 @@ app.use(cors());
 // FRONTEND
 // =====================================================
 
+const FRONTEND_PATH =
+    path.join(__dirname, "../frontend");
+
+
 app.use(
-    express.static(
-        path.join(__dirname, "../frontend")
-    )
+    express.static(FRONTEND_PATH)
 );
 
 
@@ -44,19 +46,42 @@ function readDB() {
             usuarios: [],
             pacientes: [],
             triagens: [],
-            consultas: []
+            consultas: [],
+            altas: []
 
         };
 
     }
 
 
-    return JSON.parse(
-        fs.readFileSync(
-            DB_FILE,
-            "utf8"
-        )
-    );
+    const db =
+        JSON.parse(
+            fs.readFileSync(
+                DB_FILE,
+                "utf8"
+            )
+        );
+
+
+    // Garante que todas as listas existam
+
+    db.usuarios =
+        db.usuarios || [];
+
+    db.pacientes =
+        db.pacientes || [];
+
+    db.triagens =
+        db.triagens || [];
+
+    db.consultas =
+        db.consultas || [];
+
+    db.altas =
+        db.altas || [];
+
+
+    return db;
 
 }
 
@@ -64,12 +89,15 @@ function readDB() {
 function writeDB(data) {
 
     fs.writeFileSync(
+
         DB_FILE,
+
         JSON.stringify(
             data,
             null,
             2
         )
+
     );
 
 }
@@ -83,8 +111,8 @@ app.get("/", (req, res) => {
 
     res.sendFile(
         path.join(
-            __dirname,
-            "../frontend/index.html"
+            FRONTEND_PATH,
+            "index.html"
         )
     );
 
@@ -98,8 +126,8 @@ app.get("/", (req, res) => {
 app.post("/login", (req, res) => {
 
     console.log(
-        "Dados recebidos:",
-        req.body
+        "Tentativa de login:",
+        req.body.usuario
     );
 
 
@@ -107,30 +135,39 @@ app.post("/login", (req, res) => {
 
 
     const usuario =
-        req.body.usuario;
+        String(
+            req.body.usuario || ""
+        ).trim();
+
 
     const senha =
-        req.body.senha;
+        String(
+            req.body.senha || ""
+        ).trim();
 
 
     const user =
         db.usuarios.find(
             u =>
-                u.usuario === usuario &&
-                u.senha === senha
+                String(u.usuario).trim() === usuario &&
+                String(u.senha).trim() === senha
         );
 
 
     if (!user) {
 
         console.log(
-            "Login recusado"
+            "Login inválido:",
+            usuario
         );
+
 
         return res.status(401).json({
 
+            sucesso: false,
+
             erro:
-                "Usuário ou senha inválidos"
+                "Usuário ou senha inválidos."
 
         });
 
@@ -139,11 +176,12 @@ app.post("/login", (req, res) => {
 
     console.log(
         "Login aprovado:",
-        user
+        user.usuario,
+        user.tipo
     );
 
 
-    res.json({
+    res.status(200).json({
 
         sucesso: true,
 
@@ -187,7 +225,9 @@ app.post("/atendimento", (req, res) => {
     writeDB(db);
 
 
-    res.json(paciente);
+    res.status(201).json(
+        paciente
+    );
 
 });
 
@@ -217,8 +257,7 @@ app.post("/triagem", (req, res) => {
 
     }
 
-
-    if (
+    else if (
         temperatura < 38 &&
         risco !== "vermelho"
     ) {
@@ -237,7 +276,10 @@ app.post("/triagem", (req, res) => {
         risco: risco,
 
         status:
-            "aguardando_medico"
+            "aguardando_medico",
+
+        createdAt:
+            new Date().toISOString()
 
     };
 
@@ -250,7 +292,9 @@ app.post("/triagem", (req, res) => {
     writeDB(db);
 
 
-    res.json(triagem);
+    res.status(201).json(
+        triagem
+    );
 
 });
 
@@ -258,6 +302,28 @@ app.post("/triagem", (req, res) => {
 // =====================================================
 // LISTAR TRIAGENS
 // =====================================================
+
+app.get("/triagem", (req, res) => {
+
+    const db = readDB();
+
+
+    const pacientes =
+        db.triagens.filter(
+            paciente =>
+                paciente.status ===
+                "aguardando_medico"
+        );
+
+
+    res.json(
+        pacientes
+    );
+
+});
+
+
+// Também mantém /triagens funcionando
 
 app.get("/triagens", (req, res) => {
 
@@ -271,7 +337,7 @@ app.get("/triagens", (req, res) => {
 
 
 // =====================================================
-// CONSULTA
+// CONSULTA MÉDICA
 // =====================================================
 
 app.post("/consulta", (req, res) => {
@@ -296,16 +362,160 @@ app.post("/consulta", (req, res) => {
     );
 
 
+    // Procura o paciente na triagem
+
+    const paciente =
+        db.triagens.find(
+            p =>
+                p.nome ===
+                req.body.paciente
+        );
+
+
+    if (paciente) {
+
+        paciente.status =
+            "em_atendimento";
+
+    }
+
+
     writeDB(db);
 
 
-    res.json(consulta);
+    res.status(201).json(
+        consulta
+    );
 
 });
 
 
 // =====================================================
-// MEDICAÇÕES
+// ALTA MÉDICA
+// =====================================================
+
+app.post("/alta", (req, res) => {
+
+    const db = readDB();
+
+
+    const pacienteNome =
+        req.body.paciente;
+
+
+    if (!pacienteNome) {
+
+        return res.status(400).json({
+
+            sucesso: false,
+
+            erro:
+                "Paciente não informado."
+
+        });
+
+    }
+
+
+    const alta = {
+
+        id: Date.now(),
+
+        paciente:
+            pacienteNome,
+
+        motivo:
+            req.body.motivo || "",
+
+        observacao:
+            req.body.observacao || "",
+
+        data:
+            req.body.data ||
+            new Date()
+                .toISOString()
+                .split("T")[0],
+
+        status:
+            "liberado",
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    // Salva a alta
+
+    db.altas.push(
+        alta
+    );
+
+
+    // Atualiza paciente da triagem
+
+    db.triagens.forEach(
+        paciente => {
+
+            if (
+                paciente.nome ===
+                pacienteNome
+            ) {
+
+                paciente.status =
+                    "liberado";
+
+            }
+
+        }
+    );
+
+
+    // Atualiza paciente cadastrado
+
+    db.pacientes.forEach(
+        paciente => {
+
+            if (
+                paciente.nome ===
+                pacienteNome
+            ) {
+
+                paciente.status =
+                    "liberado";
+
+            }
+
+        }
+    );
+
+
+    writeDB(db);
+
+
+    console.log(
+        "Paciente liberado:",
+        pacienteNome
+    );
+
+
+    res.status(200).json({
+
+        sucesso: true,
+
+        mensagem:
+            "Paciente liberado com sucesso.",
+
+        alta:
+            alta
+
+    });
+
+});
+
+
+// =====================================================
+// CONSULTAS / MEDICAÇÕES
 // =====================================================
 
 app.get("/medicacoes", (req, res) => {
@@ -320,7 +530,29 @@ app.get("/medicacoes", (req, res) => {
 
 
 // =====================================================
-// PORTA
+// VERIFICAR SERVIDOR
+// =====================================================
+
+app.get("/status", (req, res) => {
+
+    res.json({
+
+        servidor:
+            "online",
+
+        sistema:
+            "hospitalar",
+
+        status:
+            "funcionando"
+
+    });
+
+});
+
+
+// =====================================================
+// PORTA DO RENDER
 // =====================================================
 
 const PORT =
@@ -329,10 +561,11 @@ const PORT =
 
 app.listen(
     PORT,
+    "0.0.0.0",
     () => {
 
         console.log(
-            `Servidor rodando em http://localhost:${PORT}`
+            `Servidor rodando na porta ${PORT}`
         );
 
     }
@@ -340,4 +573,3 @@ app.listen(
 
 
 module.exports = app;
-
