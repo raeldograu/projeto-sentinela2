@@ -16,19 +16,8 @@
       "tipo": "atendimento"
     }
   ],
-
-  "pacientes": [
-    {
-      "id": 17768577188699,
-      "nome": "",
-      "cpf": "",
-      "tipo": "particular",
-      "status": "triagem",
-      "createdAt": "2026-04-22T11:35:28.699Z"
-    }
-  ],
-
+  "pacientes": [],
   "triagens": [],
-
-  "consultas": []
+  "consultas": [],
+  "altas": []
 }
