@@ -251,20 +251,17 @@ app.post("/triagem", (req, res) => {
         );
 
 
-    if (temperatura > 39) {
+ if (temperatura >= 39) {
 
-        risco = "vermelho";
+    risco = "vermelho";
 
-    }
+}
 
-    else if (
-        temperatura < 38 &&
-        risco !== "vermelho"
-    ) {
+else if (temperatura >= 38 && risco !== "vermelho") {
 
-        risco = "amarelo";
+    risco = "amarelo";
 
-    }
+}
 
 
     const triagem = {
