@@ -66,77 +66,180 @@
     </div>
 
 <script>
-    function classificarRisco(sintoma, temperatura){
+    function classificarRisco(sintoma, temperatura) {
+
         const vermelhos = [
             "infarto",
             "avc",
             "convulsão",
             "hemorragia",
-            "falta_ar_grave",
+            "falta_ar_grave"
         ];
+
         const amarelos = [
             "febre",
             "vomito",
             "diarreia",
-            "falta_ar_moderada",
+            "falta_ar",
+            "tontura",
+            "dor_peito",
+            "pressao_alta",
+            "pressao_baixa",
+            "palpitacao"
         ];
-  
-        if(temperatura >= 39) {
+
+        // Situações graves
+        if (vermelhos.includes(sintoma)) {
             return "vermelho";
         }
 
-        if(vermelhos.includes(sintoma)){
-            return "amarelo"; /* Corrigido: adicionado aspas aqui */
+        // Febre muito alta
+        if (temperatura >= 39) {
+            return "vermelho";
         }
 
-        if(amarelos.includes(sintoma)){
+        // Situações de atenção
+        if (amarelos.includes(sintoma)) {
+            return "amarelo";
+        }
+
+        // Temperatura elevada
+        if (temperatura >= 38) {
             return "amarelo";
         }
 
         return "verde";
     }
 
-    function salvar(){
-        const nome = document.getElementById("nome").value;
-        const sintoma = document.getElementById("sintoma").value;
-        const temperatura = Number(document.getElementById("temp").value);
-        const allergies = document.getElementById("alergias").value;
-        const observação = document.getElementById("observação").value;
 
-        const risco = classificarRisco(sintoma, temperatura);
+    async function salvar() {
 
-        /* Corrigido o endereço do fetch local */
-        fetch("http://localhost:3000/triagem", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json" /* Corrigido espaçamento/letras */
-            },
-            body: JSON.stringify({
-                nome,
+        const nome =
+            document.getElementById("nome").value.trim();
+
+        const sintoma =
+            document.getElementById("sintoma").value;
+
+        const temperatura =
+            Number(document.getElementById("temp").value);
+
+        const alergias =
+            document.getElementById("alergias").value.trim();
+
+        const observacao =
+            document.getElementById("observação").value.trim();
+
+
+        // Validação
+        if (!nome) {
+            alert("Digite o nome do paciente.");
+            return;
+        }
+
+        if (!sintoma) {
+            alert("Selecione o sintoma principal.");
+            return;
+        }
+
+
+        const risco =
+            classificarRisco(
                 sintoma,
-                temperatura,
-                alergias: allergies,
-                observação,
-                risco,
-            })
-        })
-        .then(r => r.json())
-        .then(data => {
-            const resultado = document.getElementById("resultado");
-            
-            // Aplica a classe de cor correspondente ao container de resultado
-            resultado.className = risco;
-            /* Corrigido para innerHTML */
-            resultado.innerHTML = "Classificação de Risco: " + risco.toUpperCase();
-            
-            alert("Triagem salva com sucesso!");
-        })
-        .catch(err => {
-            console.error("Erro ao salvar:", err);
-            alert("Erro ao conectar com o servidor.");
-        });
+                temperatura
+            );
+
+
+        try {
+
+            const response =
+                await fetch("/triagem", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        nome: nome,
+
+                        sintoma: sintoma,
+
+                        temperatura: temperatura,
+
+                        alergias: alergias,
+
+                        observacao: observacao,
+
+                        risco: risco
+
+                    })
+
+                });
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.erro ||
+                    "Erro ao salvar a triagem."
+                );
+
+            }
+
+
+            const resultado =
+                document.getElementById("resultado");
+
+
+            resultado.className =
+                risco;
+
+
+            resultado.innerHTML =
+                "Classificação de Risco: " +
+                risco.toUpperCase();
+
+
+            alert(
+                "Triagem salva com sucesso!"
+            );
+
+
+            // Limpa o formulário
+
+            document.getElementById("nome").value = "";
+
+            document.getElementById("sintoma").value = "";
+
+            document.getElementById("temp").value = "";
+
+            document.getElementById("alergias").value = "";
+
+            document.getElementById("observação").value = "";
+
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao salvar triagem:",
+                error
+            );
+
+
+            alert(
+                "Erro ao conectar com o servidor.\n\n" +
+                error.message
+            );
+
+        }
+
     }
 </script>
-
 </body>
 </html>
