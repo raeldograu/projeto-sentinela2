@@ -10,444 +10,612 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Painel Médico
-    </title>
+    <title>Painel Médico</title>
 
-    <link
-        rel="stylesheet"
-        href="css/medico.css"
-    >
+   <style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf8ff,
+            #f4efff
+        );
+
+    color: #29374d;
+
+    padding: 25px;
+}
+
+.container {
+    max-width: 1000px;
+
+    margin: auto;
+}
+
+.header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.header span {
+    color: #657fd8;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.header h1 {
+    margin-top: 5px;
+
+    font-size: 30px;
+}
+
+.header p {
+    color: #7d899a;
+
+    margin-top: 5px;
+}
+
+.refresh {
+    border: none;
+
+    background: white;
+
+    color: #536bd1;
+
+    padding: 12px 18px;
+
+    border-radius: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 20px rgba(50,70,100,0.1);
+}
+
+.info {
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(50,70,100,0.08);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 16px;
+
+    background: #e6f4ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+.info p {
+    color: #8994a4;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+}
+
+.lista {
+    display: grid;
+
+    gap: 17px;
+}
+
+.patient-card {
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 10px 30px rgba(52,76,108,0.1);
+}
+
+.patient-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.avatar {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 17px;
+
+    background: #e6efff;
+
+    color: #526ed5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+.patient-name {
+    flex: 1;
+}
+
+.patient-name h2 {
+    font-size: 18px;
+}
+
+.patient-name span {
+    font-size: 12px;
+
+    color: #8994a3;
+}
+
+.risk {
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.risk.verde {
+    background: #e2f8eb;
+    color: #248250;
+}
+
+.risk.amarelo {
+    background: #fff4ce;
+    color: #96720e;
+}
+
+.risk.vermelho {
+    background: #ffe3e3;
+    color: #c43d3d;
+}
+
+.patient-data {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin: 20px 0;
+}
+
+.patient-data div {
+    background: #f8fafc;
+
+    padding: 13px;
+
+    border-radius: 13px;
+}
+
+.patient-data small {
+    display: block;
+
+    color: #8994a4;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+.patient-data strong {
+    font-size: 13px;
+}
+
+.attend {
+    width: 100%;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6389ef,
+            #7b68d9
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.empty,
+.loading,
+.error {
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 50px 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(50,70,100,0.08);
+}
+
+.empty > div {
+    font-size: 45px;
+
+    margin-bottom: 12px;
+}
+
+.empty h2 {
+    font-size: 20px;
+
+    margin-bottom: 8px;
+}
+
+.empty p {
+    color: #8994a4;
+
+    font-size: 14px;
+}
+
+.error {
+    color: #c74343;
+}
+
+footer {
+    text-align: center;
+
+    color: #8994a4;
+
+    font-size: 12px;
+
+    margin-top: 25px;
+}
+
+@media(max-width:650px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .header {
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .refresh {
+        padding: 10px;
+    }
+
+    .patient-data {
+        grid-template-columns: 1fr;
+    }
+
+}</style>
 </head>
-
 
 <body>
 
-<div class="container">
+    <main class="container">
 
-
-    <header class="header">
-
-        <div>
-
-            <span class="subtitle">
-                SISTEMA HOSPITALAR
-            </span>
-
-            <h1>
-                🩺 Painel Médico
-            </h1>
-
-            <p>
-                Pacientes aguardando atendimento
-            </p>
-
-        </div>
-
-
-        <div class="status">
-
-            <span class="status-dot"></span>
-
-            Sistema Online
-
-        </div>
-
-    </header>
-
-
-    <section class="section">
-
-
-        <div class="section-title">
+        <header class="header">
 
             <div>
 
-                <span class="tag">
-                    ATENDIMENTO
+                <span>
+                    SENTINELA KIDS
                 </span>
 
-                <h2>
-                    Pacientes para atender
-                </h2>
+                <h1>
+                    🩺 Painel Médico
+                </h1>
+
+                <p>
+                    Pacientes aguardando atendimento
+                </p>
 
             </div>
-
 
             <button
-                class="refresh-btn"
+                class="refresh"
                 onclick="carregarPacientes()"
             >
-
                 ↻ Atualizar
-
             </button>
 
-        </div>
+        </header>
 
+        <section class="info">
 
-        <div
-            id="triagem"
-            class="triagem"
-        ></div>
+            <div class="info-icon">
+                👨‍⚕️
+            </div>
 
+            <div>
 
-    </section>
+                <strong>
+                    Lista de atendimento
+                </strong>
 
-
-    <footer>
-
-        Sistema Hospitalar • Painel Médico
-
-    </footer>
-
-
-</div>
-
-
-<script>
-
-    async function carregarPacientes() {
-
-        const div =
-            document
-                .getElementById(
-                    "triagem"
-                );
-
-
-        div.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⏳
-                </div>
-
-                <h3>
-                    Carregando pacientes...
-                </h3>
+                <p>
+                    Selecione um paciente para iniciar a consulta.
+                </p>
 
             </div>
 
-        `;
+        </section>
 
+        <section
+            id="listaPacientes"
+            class="lista"
+        ></section>
 
-        try {
+        <footer>
+            Sentinela Kids • Painel Médico
+        </footer>
 
-            const response =
-                await fetch(
-                    "/triagem"
+    </main>
+
+    <script>
+
+        async function carregarPacientes() {
+
+            const lista =
+                document.getElementById(
+                    "listaPacientes"
                 );
 
+            lista.innerHTML = `
+                <div class="loading">
+                    ⏳ Carregando pacientes...
+                </div>
+            `;
 
-            if (!response.ok) {
+            try {
 
-                throw new Error(
-                    "Erro ao carregar pacientes."
+                const response =
+                    await fetch("/triagem");
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Erro ao buscar pacientes."
+                    );
+
+                }
+
+                const pacientes =
+                    await response.json();
+
+                lista.innerHTML = "";
+
+                if (
+                    !Array.isArray(pacientes) ||
+                    pacientes.length === 0
+                ) {
+
+                    lista.innerHTML = `
+                        <div class="empty">
+
+                            <div>
+                                🧸
+                            </div>
+
+                            <h2>
+                                Nenhum paciente aguardando
+                            </h2>
+
+                            <p>
+                                Quando uma triagem for realizada,
+                                o paciente aparecerá aqui.
+                            </p>
+
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+                pacientes.forEach(
+                    paciente => {
+
+                        criarCard(
+                            paciente,
+                            lista
+                        );
+
+                    }
                 );
+
+            } catch (error) {
+
+                console.error(error);
+
+                lista.innerHTML = `
+                    <div class="error">
+                        ❌ Não foi possível carregar os pacientes.
+                        <br><br>
+                        ${error.message}
+                    </div>
+                `;
 
             }
 
-
-            const pacientes =
-                await response.json();
+        }
 
 
-            div.innerHTML = "";
+        function criarCard(
+            paciente,
+            lista
+        ) {
 
+            const risco =
+                String(
+                    paciente.risco ||
+                    "verde"
+                ).toLowerCase();
 
-            if (
-                !Array.isArray(pacientes) ||
-                pacientes.length === 0
-            ) {
+            const nome =
+                paciente.nome ||
+                "Paciente";
 
-                div.innerHTML = `
+            const sintoma =
+                paciente.sintoma ||
+                "Não informado";
 
-                    <div class="empty">
+            const temperatura =
+                paciente.temperatura !== null &&
+                paciente.temperatura !== undefined &&
+                paciente.temperatura !== ""
+                    ? paciente.temperatura + " °C"
+                    : "Não informada";
 
-                        <div class="empty-icon">
-                            ✓
-                        </div>
+            const alergias =
+                paciente.alergias ||
+                "Nenhuma informada";
 
-                        <h3>
-                            Nenhum paciente aguardando
-                        </h3>
+            const card =
+                document.createElement("article");
 
-                        <p>
-                            Não existem pacientes
-                            aguardando atendimento.
-                        </p>
+            card.className =
+                "patient-card";
+
+            card.innerHTML = `
+
+                <div class="patient-header">
+
+                    <div class="avatar">
+                        ${nome
+                            .charAt(0)
+                            .toUpperCase()}
+                    </div>
+
+                    <div class="patient-name">
+
+                        <h2>
+                            ${nome}
+                        </h2>
+
+                        <span>
+                            Aguardando médico
+                        </span>
 
                     </div>
 
-                `;
+                    <div class="risk ${risco}">
+                        ${risco.toUpperCase()}
+                    </div>
+
+                </div>
+
+                <div class="patient-data">
+
+                    <div>
+                        <small>Sintoma</small>
+                        <strong>${sintoma}</strong>
+                    </div>
+
+                    <div>
+                        <small>Temperatura</small>
+                        <strong>${temperatura}</strong>
+                    </div>
+
+                    <div>
+                        <small>Alergias</small>
+                        <strong>${alergias}</strong>
+                    </div>
+
+                </div>
+
+                <button
+                    class="attend"
+                    onclick="atenderPaciente(${paciente.id})"
+                >
+                    Atender paciente 🩺
+                </button>
+
+            `;
+
+            lista.appendChild(card);
+
+        }
+
+
+        function atenderPaciente(id) {
+
+            if (!id) {
+
+                alert(
+                    "Paciente inválido."
+                );
 
                 return;
 
             }
 
-
-            pacientes.forEach(
-                paciente => {
-
-                    const risco =
-                        String(
-                            paciente.risco ||
-                            "verde"
-                        ).toLowerCase();
-
-
-                    let classeRisco =
-                        "risco-verde";
-
-
-                    if (
-                        risco.includes(
-                            "vermelho"
-                        )
-                    ) {
-
-                        classeRisco =
-                            "risco-vermelho";
-
-                    }
-
-                    else if (
-                        risco.includes(
-                            "amarelo"
-                        )
-                    ) {
-
-                        classeRisco =
-                            "risco-amarelo";
-
-                    }
-
-                    else if (
-                        risco.includes(
-                            "laranja"
-                        )
-                    ) {
-
-                        classeRisco =
-                            "risco-laranja";
-
-                    }
-
-                    else if (
-                        risco.includes(
-                            "azul"
-                        )
-                    ) {
-
-                        classeRisco =
-                            "risco-azul";
-
-                    }
-
-
-                    const nome =
-                        paciente.nome ||
-                        "Paciente";
-
-
-                    const sintoma =
-                        paciente.sintoma ||
-                        "Não informado";
-
-
-                    const temperatura =
-                        paciente.temperatura !== null &&
-                        paciente.temperatura !== undefined &&
-                        paciente.temperatura !== ""
-                            ? paciente.temperatura + " °C"
-                            : "Não informada";
-
-
-                    const alergias =
-                        paciente.alergias ||
-                        "Nenhuma";
-
-
-                    const observacao =
-                        paciente.observacao ||
-                        "Nenhuma";
-
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    card.className =
-                        "patient-card";
-
-
-                    card.innerHTML = `
-
-                        <div class="patient-top">
-
-                            <div class="patient-avatar">
-
-                                ${nome
-                                    .charAt(0)
-                                    .toUpperCase()}
-
-                            </div>
-
-
-                            <div class="patient-name">
-
-                                <h3>
-                                    ${nome}
-                                </h3>
-
-                                <span>
-                                    Aguardando atendimento
-                                </span>
-
-                            </div>
-
-
-                            <span
-                                class="risk ${classeRisco}"
-                            >
-
-                                ${paciente.risco}
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="patient-info">
-
-                            <div>
-
-                                <span>
-                                    Sintoma
-                                </span>
-
-                                <strong>
-                                    ${sintoma}
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Temperatura
-                                </span>
-
-                                <strong>
-                                    ${temperatura}
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Alergias
-                                </span>
-
-                                <strong>
-                                    ${alergias}
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="observation">
-
-                            <strong>
-                                Observações:
-                            </strong>
-
-                            <br><br>
-
-                            ${observacao}
-
-                        </div>
-
-
-                        <button
-                            class="attend-btn"
-                            onclick="atenderPaciente(${paciente.id})"
-                        >
-
-                            🩺 Atender paciente
-
-                        </button>
-
-                    `;
-
-
-                    div.appendChild(
-                        card
-                    );
-
-                }
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            div.innerHTML = `
-
-                <div class="error">
-
-                    ❌ Não foi possível
-                    carregar os pacientes.
-
-                    <br><br>
-
-                    ${error.message}
-
-                </div>
-
-            `;
-
-        }
-
-    }
-
-
-    function atenderPaciente(id) {
-
-        if (!id) {
-
-            alert(
-                "Paciente inválido."
-            );
-
-            return;
+            window.location.href =
+                `/consulta.html?id=${id}`;
 
         }
 
 
-        window.location.href =
-            `/consulta.html?id=${id}`;
+        carregarPacientes();
 
-    }
-
-
-    carregarPacientes();
-
-</script>
+    </script>
 
 </body>
 
