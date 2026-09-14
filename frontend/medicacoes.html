@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Medicações</title>
+
+    <style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf8ff,
+            #f4efff
+        );
+
+    color: #29374d;
+
+    padding: 25px;
+}
+
+.container {
+    max-width: 950px;
+
+    margin: auto;
+}
+
+.header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.header span {
+    color: #667ed6;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.header h1 {
+    margin-top: 5px;
+
+    font-size: 29px;
+}
+
+.header p {
+    color: #7f8a9b;
+
+    margin-top: 5px;
+
+    font-size: 14px;
+}
+
+.header button {
+    border: none;
+
+    background: white;
+
+    color: #586ed0;
+
+    padding: 12px 17px;
+
+    border-radius: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.lista {
+    display: grid;
+
+    gap: 17px;
+}
+
+.card {
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 23px;
+
+    box-shadow:
+        0 10px 30px rgba(50,70,100,0.1);
+}
+
+.card-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 17px;
+
+    border-bottom:
+        1px solid #edf0f4;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 16px;
+
+    background: #fff1d8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+.card h2 {
+    font-size: 18px;
+}
+
+.card-header span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8994a4;
+
+    font-size: 12px;
+}
+
+.content {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin-top: 17px;
+}
+
+.content div {
+    background: #f8fafc;
+
+    border-radius: 13px;
+
+    padding: 14px;
+}
+
+.content small {
+    display: block;
+
+    color: #8a95a4;
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+}
+
+.content p {
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.loading,
+.empty,
+.error {
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 50px;
+
+    text-align: center;
+}
+
+.empty {
+    font-size: 40px;
+}
+
+.empty h2 {
+    margin-top: 12px;
+
+    font-size: 19px;
+}
+
+.error {
+    color: #c44343;
+}
+
+@media(max-width:650px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+}</style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+
+            <div>
+
+                <span>
+                    SENTINELA KIDS
+                </span>
+
+                <h1>
+                    💊 Medicações
+                </h1>
+
+                <p>
+                    Prescrições registradas nas consultas.
+                </p>
+
+            </div>
+
+            <button
+                onclick="carregarMedicacoes()"
+            >
+                ↻ Atualizar
+            </button>
+
+        </header>
+
+        <section
+            id="lista"
+            class="lista"
+        >
+
+            <div class="loading">
+                ⏳ Carregando...
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        async function carregarMedicacoes() {
+
+            const lista =
+                document.getElementById(
+                    "lista"
+                );
+
+            lista.innerHTML = `
+                <div class="loading">
+                    ⏳ Carregando prescrições...
+                </div>
+            `;
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/medicacoes"
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Erro ao carregar medicações."
+                    );
+
+                }
+
+                const consultas =
+                    await response.json();
+
+                lista.innerHTML = "";
+
+                if (
+                    !Array.isArray(consultas) ||
+                    consultas.length === 0
+                ) {
+
+                    lista.innerHTML = `
+                        <div class="empty">
+                            💊
+                            <h2>
+                                Nenhuma prescrição registrada
+                            </h2>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+                consultas.forEach(
+                    consulta => {
+
+                        const card =
+                            document.createElement(
+                                "article"
+                            );
+
+                        card.className =
+                            "card";
+
+                        card.innerHTML = `
+
+                            <div class="card-header">
+
+                                <div class="icon">
+                                    💊
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        ${consulta.paciente || "Paciente"}
+                                    </h2>
+
+                                    <span>
+                                        Consulta registrada
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="content">
+
+                                <div>
+
+                                    <small>
+                                        Diagnóstico
+                                    </small>
+
+                                    <p>
+                                        ${consulta.diagnostico || "Não informado"}
+                                    </p>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Prescrição
+                                    </small>
+
+                                    <p>
+                                        ${consulta.prescricao || "Nenhuma prescrição registrada"}
+                                    </p>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Observações
+                                    </small>
+
+                                    <p>
+                                        ${consulta.observacoes || "Nenhuma"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                        lista.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                lista.innerHTML = `
+                    <div class="error">
+                        ❌ Erro ao carregar as informações.
+                        <br><br>
+                        ${error.message}
+                    </div>
+                `;
+
+            }
+
+        }
+
+        carregarMedicacoes();
+
+    </script>
+
+</body>
+
+</html>
