@@ -10,1519 +10,1155 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Consulta Médica
-    </title>
+    <title>Consulta do Paciente</title>
 
-    <style>
+<style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    min-height: 100vh;
 
+    font-family: Arial, Helvetica, sans-serif;
 
-        body {
+    background:
+        linear-gradient(
+            135deg,
+            #eaf8ff,
+            #f4efff,
+            #edfff7
+        );
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+    color: #29374d;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #eef5ff,
-                    #f8fbff
-                );
+    padding: 25px;
+}
 
-            color: #172033;
+.container {
+    max-width: 950px;
 
-            min-height: 100vh;
+    margin: auto;
+}
 
-            padding: 30px 15px;
+.header {
+    display: flex;
 
-        }
+    justify-content: space-between;
 
+    align-items: center;
 
-        .container {
+    margin-bottom: 20px;
+}
 
-            max-width: 1100px;
+.header span {
+    color: #637ed9;
 
-            margin: auto;
+    font-size: 12px;
 
-        }
+    font-weight: bold;
 
+    letter-spacing: 1px;
+}
 
-        .voltar {
+.header h1 {
+    margin-top: 5px;
 
-            background: white;
+    font-size: 29px;
+}
 
-            color: #3478db;
+.header p {
+    color: #7f8b9c;
 
-            border: none;
+    margin-top: 5px;
 
-            padding: 12px 18px;
+    font-size: 14px;
+}
 
-            border-radius: 10px;
+.back-button {
+    border: none;
 
-            cursor: pointer;
+    background: white;
 
-            font-weight: bold;
+    padding: 11px 16px;
 
-            margin-bottom: 20px;
+    border-radius: 13px;
 
-            box-shadow:
-                0 5px 18px
-                rgba(30,70,120,.08);
+    color: #5d70cb;
 
-        }
+    font-weight: bold;
 
+    cursor: pointer;
 
-        .header {
+    box-shadow:
+        0 6px 18px rgba(50,70,100,0.1);
+}
 
-            background: white;
+.message {
+    background: white;
 
-            border-radius: 20px;
+    padding: 35px;
 
-            padding: 28px;
+    text-align: center;
 
-            margin-bottom: 25px;
+    border-radius: 20px;
+}
 
-            box-shadow:
-                0 10px 35px
-                rgba(30,70,120,.10);
+.error-message {
+    color: #c44343;
+}
 
-        }
+.patient-card {
+    background: white;
 
+    border-radius: 23px;
 
-        .tag {
+    padding: 23px;
 
-            color: #3478db;
+    display: flex;
 
-            font-size: 11px;
+    justify-content: space-between;
 
-            font-weight: bold;
+    align-items: center;
 
-            letter-spacing: 1.5px;
+    margin-bottom: 18px;
 
-        }
+    box-shadow:
+        0 10px 30px rgba(52,75,105,0.1);
+}
 
+.patient-main {
+    display: flex;
 
-        .header h1 {
+    align-items: center;
 
-            margin-top: 7px;
+    gap: 15px;
+}
 
-            font-size: 28px;
+.avatar {
+    width: 60px;
+    height: 60px;
 
-        }
+    border-radius: 19px;
 
+    background: #e6efff;
 
-        .header p {
+    color: #5770d3;
 
-            color: #7a8497;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            margin-top: 7px;
+    font-size: 25px;
 
-        }
+    font-weight: bold;
+}
 
+.label {
+    color: #8290a2;
 
-        .card {
+    font-size: 10px;
 
-            background: white;
+    font-weight: bold;
+}
 
-            border-radius: 20px;
+.patient-main h2 {
+    font-size: 22px;
 
-            padding: 28px;
+    margin-top: 4px;
+}
 
-            margin-bottom: 22px;
+.patient-main p {
+    color: #6e7d90;
 
-            box-shadow:
-                0 10px 35px
-                rgba(30,70,120,.08);
+    font-size: 13px;
 
-        }
+    margin-top: 4px;
+}
 
+.risk {
+    padding: 8px 14px;
 
-        .card h2 {
+    border-radius: 20px;
 
-            margin-bottom: 20px;
+    font-size: 11px;
 
-            font-size: 21px;
+    font-weight: bold;
+}
 
-        }
+.risk.verde {
+    background: #e2f8eb;
+    color: #278152;
+}
 
+.risk.amarelo {
+    background: #fff4cf;
+    color: #97720f;
+}
 
-        .patient-header {
+.risk.vermelho {
+    background: #ffe4e4;
+    color: #c33f3f;
+}
 
-            display: flex;
+.card {
+    background: white;
 
-            align-items: center;
+    border-radius: 23px;
 
-            gap: 15px;
+    padding: 25px;
 
-            margin-bottom: 22px;
+    margin-bottom: 18px;
 
-        }
+    box-shadow:
+        0 10px 30px rgba(52,75,105,0.08);
+}
 
+.card h2 {
+    font-size: 19px;
 
-        .avatar {
+    color: #4f65cf;
 
-            width: 60px;
+    margin-bottom: 20px;
+}
 
-            height: 60px;
+.info-grid {
+    display: grid;
 
-            border-radius: 16px;
+    grid-template-columns:
+        repeat(2, 1fr);
 
-            display: flex;
+    gap: 12px;
+}
 
-            align-items: center;
+.info-grid > div {
+    background: #f8fafc;
 
-            justify-content: center;
+    padding: 14px;
 
-            background: #eaf3ff;
+    border-radius: 14px;
+}
 
-            color: #3478db;
+.info-grid .full {
+    grid-column: 1 / -1;
+}
 
-            font-size: 25px;
+.info-grid small {
+    display: block;
 
-            font-weight: bold;
+    color: #8792a2;
 
-        }
+    font-size: 11px;
 
+    margin-bottom: 6px;
+}
 
-        .patient-header h2 {
+.info-grid strong {
+    font-size: 13px;
 
-            margin: 0;
+    word-break: break-word;
+}
 
-        }
+.field {
+    margin-bottom: 17px;
+}
 
+.field label {
+    display: block;
 
-        .patient-header p {
+    margin-bottom: 7px;
 
-            color: #8993a5;
+    color: #536075;
 
-            margin-top: 5px;
+    font-size: 13px;
 
-        }
+    font-weight: bold;
+}
 
+textarea,
+input {
+    width: 100%;
 
-        .info-grid {
+    border: 2px solid #e6ebf1;
 
-            display: grid;
+    border-radius: 14px;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    padding: 14px;
 
-            gap: 12px;
+    font-family: inherit;
 
-        }
+    outline: none;
 
+    background: #fafcfe;
+}
 
-        .info {
+textarea {
+    min-height: 110px;
 
-            background: #f7f9fc;
+    resize: vertical;
+}
 
-            padding: 15px;
+textarea:focus,
+input:focus {
+    border-color: #718bea;
 
-            border-radius: 12px;
+    background: white;
+}
 
-        }
+.save-button {
+    width: 100%;
 
+    border: none;
 
-        .info span {
+    padding: 15px;
 
-            display: block;
+    border-radius: 15px;
 
-            color: #8993a5;
+    background:
+        linear-gradient(
+            135deg,
+            #6389ef,
+            #7d69dc
+        );
 
-            font-size: 11px;
+    color: white;
 
-            margin-bottom: 6px;
+    font-weight: bold;
 
-        }
+    font-size: 15px;
 
+    cursor: pointer;
+}
 
-        .info strong {
+.alta-card {
+    background: #fff;
 
-            font-size: 14px;
+    border: 2px solid #e6eafa;
 
-        }
+    border-radius: 23px;
 
+    padding: 22px;
 
-        .risk {
+    display: flex;
 
-            display: inline-block;
+    justify-content: space-between;
 
-            margin-top: 18px;
+    align-items: center;
 
-            padding: 8px 13px;
+    gap: 20px;
 
-            border-radius: 20px;
+}
 
-            font-size: 12px;
+.alta-card h2 {
+    color: #4f65cf;
 
-            font-weight: bold;
+    font-size: 19px;
+}
 
-            text-transform: uppercase;
+.alta-card p {
+    color: #8792a2;
 
-        }
+    font-size: 13px;
 
+    margin-top: 5px;
+}
 
-        .risco-vermelho {
+.alta-button {
+    border: none;
 
-            background: #ffe7e7;
+    padding: 13px 22px;
 
-            color: #d82f2f;
+    border-radius: 14px;
 
-        }
+    background: #67bf91;
 
+    color: white;
 
-        .risco-amarelo {
+    font-weight: bold;
 
-            background: #fff8d9;
+    cursor: pointer;
 
-            color: #a18400;
+    white-space: nowrap;
+}
 
-        }
+.alta-form {
+    margin-top: 18px;
+}
 
+.confirm-alta {
+    width: 100%;
 
-        .risco-verde {
+    border: none;
 
-            background: #e6f8ed;
+    padding: 15px;
 
-            color: #23824b;
+    border-radius: 15px;
 
-        }
+    background: #54b884;
 
+    color: white;
 
-        .risco-laranja {
+    font-weight: bold;
 
-            background: #fff0df;
+    cursor: pointer;
+}
 
-            color: #d76a00;
+@media(max-width:650px) {
 
-        }
+    body {
+        padding: 15px;
+    }
 
+    .header {
+        align-items: flex-start;
+    }
 
-        .observacao {
+    .header h1 {
+        font-size: 23px;
+    }
 
-            margin-top: 15px;
+    .patient-card {
+        align-items: flex-start;
 
-            padding: 15px;
+        gap: 15px;
+    }
 
-            border-radius: 12px;
+    .patient-card {
+        flex-direction: column;
+    }
 
-            background: #f8fafc;
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
 
-            color: #596579;
+    .info-grid .full {
+        grid-column: auto;
+    }
 
-            font-size: 14px;
+    .alta-card {
+        flex-direction: column;
 
-        }
+        align-items: stretch;
+    }
 
-
-        .form-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 18px;
-
-        }
-
-
-        .input-group {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 7px;
-
-        }
-
-
-        .full {
-
-            grid-column: 1 / -1;
-
-        }
-
-
-        label {
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-            color: #465268;
-
-        }
-
-
-        input,
-        textarea {
-
-            width: 100%;
-
-            border: 1px solid #dfe5ee;
-
-            background: #fafbfd;
-
-            padding: 13px;
-
-            border-radius: 10px;
-
-            outline: none;
-
-            font-size: 14px;
-
-        }
-
-
-        input:focus,
-        textarea:focus {
-
-            border-color: #3478db;
-
-            background: white;
-
-        }
-
-
-        textarea {
-
-            min-height: 130px;
-
-            resize: vertical;
-
-        }
-
-
-        button {
-
-            border: none;
-
-            cursor: pointer;
-
-            border-radius: 11px;
-
-            font-weight: bold;
-
-        }
-
-
-        .primary {
-
-            margin-top: 20px;
-
-            background: #3478db;
-
-            color: white;
-
-            padding: 14px 24px;
-
-            width: 100%;
-
-        }
-
-
-        .primary:hover {
-
-            background: #2865bd;
-
-        }
-
-
-        .alta {
-
-            border-top: 5px solid #32a866;
-
-        }
-
-
-        .alta button {
-
-            width: 100%;
-
-            padding: 15px;
-
-            background: #32a866;
-
-            color: white;
-
-            margin-top: 18px;
-
-        }
-
-
-        .success {
-
-            background: #e8f8ef;
-
-            color: #23824b;
-
-            padding: 14px;
-
-            border-radius: 10px;
-
-            margin-top: 15px;
-
-            display: none;
-
-        }
-
-
-        .error {
-
-            background: #fff0f0;
-
-            color: #c62828;
-
-            padding: 20px;
-
-            border-radius: 12px;
-
-            text-align: center;
-
-        }
-
-
-        .historico {
-
-            margin-top: 20px;
-
-        }
-
-
-        .consulta-historico {
-
-            background: #f7f9fc;
-
-            padding: 15px;
-
-            border-radius: 12px;
-
-            margin-bottom: 10px;
-
-        }
-
-
-        .consulta-historico strong {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-        }
-
-
-        .consulta-historico span {
-
-            display: block;
-
-            color: #667085;
-
-            font-size: 13px;
-
-            margin-top: 4px;
-
-        }
-
-
-        @media(max-width:700px) {
-
-            .info-grid,
-            .form-grid {
-
-                grid-template-columns: 1fr;
-
-            }
-
-
-            .full {
-
-                grid-column: auto;
-
-            }
-
-        }
-
-    </style>
-
+}</style>
 </head>
-
 
 <body>
 
-<div class="container">
+    <main class="container">
 
+        <header class="header">
 
-    <button
-        class="voltar"
-        onclick="voltar()"
-    >
+            <div>
 
-        ← Voltar para pacientes
+                <span>
+                    CONSULTA MÉDICA
+                </span>
 
-    </button>
+                <h1>
+                    🩺 Atendimento
+                </h1>
 
-
-    <header class="header">
-
-        <span class="tag">
-            ATENDIMENTO MÉDICO
-        </span>
-
-        <h1>
-            Consulta do Paciente
-        </h1>
-
-        <p>
-            Prontuário e atendimento médico
-        </p>
-
-    </header>
-
-
-    <!-- =========================================
-         DADOS DO PACIENTE
-    ========================================== -->
-
-    <section
-        class="card"
-        id="dadosPaciente"
-    >
-
-        <h2>
-            Carregando paciente...
-        </h2>
-
-    </section>
-
-
-    <!-- =========================================
-         CONSULTA
-    ========================================== -->
-
-    <section class="card">
-
-        <h2>
-            🩺 Registrar Consulta
-        </h2>
-
-
-        <div class="form-grid">
-
-
-            <div class="input-group">
-
-                <label>
-                    Diagnóstico
-                </label>
-
-                <input
-                    id="diagnostico"
-                    placeholder="Informe o diagnóstico"
-                >
+                <p>
+                    Histórico e informações do paciente.
+                </p>
 
             </div>
 
+            <button
+                class="back-button"
+                onclick="voltar()"
+            >
+                ← Voltar
+            </button>
 
-            <div class="input-group">
+        </header>
 
-                <label>
-                    Medicação / Prescrição
-                </label>
-
-                <input
-                    id="medicacao"
-                    placeholder="Informe a medicação"
-                >
-
-            </div>
-
-
-            <div class="input-group full">
-
-                <label>
-                    Observações médicas
-                </label>
-
-                <textarea
-                    id="observacoes"
-                    placeholder="Digite as observações da consulta..."
-                ></textarea>
-
-            </div>
-
+        <div id="loading" class="message">
+            ⏳ Carregando paciente...
         </div>
-
-
-        <button
-            class="primary"
-            onclick="salvarConsulta()"
-        >
-
-            ✓ Salvar consulta
-
-        </button>
-
 
         <div
-            id="sucessoConsulta"
-            class="success"
+            id="conteudo"
+            style="display:none;"
         >
 
-            ✓ Consulta salva com sucesso.
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         HISTÓRICO
-    ========================================== -->
-
-    <section class="card">
-
-        <h2>
-            📋 Histórico da Consulta
-        </h2>
-
-
-        <div
-            id="historico"
-            class="historico"
-        >
-
-            Nenhuma consulta registrada.
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         ALTA
-    ========================================== -->
-
-    <section class="card alta">
-
-        <h2>
-            ✓ Alta Médica
-        </h2>
-
-
-        <p
-            style="
-                color:#8993a5;
-                margin-bottom:20px;
-            "
-        >
-
-            Finalize o atendimento e libere o paciente.
-
-        </p>
-
-
-        <div class="form-grid">
-
-
-            <div class="input-group">
-
-                <label>
-                    Motivo da alta
-                </label>
-
-                <input
-                    id="motivoAlta"
-                    placeholder="Ex.: Tratamento concluído"
-                >
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>
-                    Data da alta
-                </label>
-
-                <input
-                    type="date"
-                    id="dataAlta"
-                >
-
-            </div>
-
-
-            <div class="input-group full">
-
-                <label>
-                    Observações da alta
-                </label>
-
-                <textarea
-                    id="observacaoAlta"
-                    placeholder="Observações finais..."
-                ></textarea>
-
-            </div>
-
-        </div>
-
-
-        <button
-            onclick="darAlta()"
-        >
-
-            ✓ Confirmar alta e liberar paciente
-
-        </button>
-
-    </section>
-
-
-</div>
-
-
-<script>
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const pacienteId =
-        params.get("id");
-
-
-    let pacienteAtual =
-        null;
-
-
-    // =============================================
-    // VOLTAR
-    // =============================================
-
-    function voltar() {
-
-        window.location.href =
-            "/medico.html";
-
-    }
-
-
-    // =============================================
-    // CARREGAR PACIENTE
-    // =============================================
-
-    async function carregarPaciente() {
-
-        const div =
-            document.getElementById(
-                "dadosPaciente"
-            );
-
-
-        if (!pacienteId) {
-
-            div.innerHTML = `
-
-                <div class="error">
-
-                    Paciente não informado.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `/paciente/${pacienteId}`
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.erro ||
-                    "Paciente não encontrado."
-                );
-
-            }
-
-
-            pacienteAtual =
-                data;
-
-
-            const nome =
-                data.nome ||
-                "Paciente";
-
-
-            const risco =
-                String(
-                    data.risco ||
-                    "verde"
-                ).toLowerCase();
-
-
-            let classeRisco =
-                "risco-verde";
-
-
-            if (
-                risco.includes("vermelho")
-            ) {
-
-                classeRisco =
-                    "risco-vermelho";
-
-            }
-
-            else if (
-                risco.includes("amarelo")
-            ) {
-
-                classeRisco =
-                    "risco-amarelo";
-
-            }
-
-            else if (
-                risco.includes("laranja")
-            ) {
-
-                classeRisco =
-                    "risco-laranja";
-
-            }
-
-
-            const temperatura =
-                data.temperatura !== null &&
-                data.temperatura !== undefined &&
-                data.temperatura !== ""
-                    ? data.temperatura + " °C"
-                    : "Não informada";
-
-
-            div.innerHTML = `
-
-                <div class="patient-header">
-
-                    <div class="avatar">
-
-                        ${nome
-                            .charAt(0)
-                            .toUpperCase()}
-
+            <section class="patient-card">
+
+                <div class="patient-main">
+
+                    <div
+                        id="avatar"
+                        class="avatar"
+                    >
+                        P
                     </div>
-
 
                     <div>
 
-                        <h2>
-                            ${nome}
+                        <span class="label">
+                            PACIENTE
+                        </span>
+
+                        <h2 id="nomePaciente">
+                            Paciente
                         </h2>
 
-                        <p>
-                            Paciente em atendimento
+                        <p id="statusPaciente">
+                            Em atendimento
                         </p>
 
                     </div>
 
                 </div>
 
+                <div
+                    id="risco"
+                    class="risk"
+                >
+                    RISCO
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>
+                    📋 Informações cadastradas
+                </h2>
 
                 <div class="info-grid">
 
-                    <div class="info">
-
-                        <span>
-                            Sintoma principal
-                        </span>
-
-                        <strong>
-                            ${data.sintoma || "Não informado"}
-                        </strong>
-
+                    <div>
+                        <small>CPF</small>
+                        <strong id="cpf">Não informado</strong>
                     </div>
 
-
-                    <div class="info">
-
-                        <span>
-                            Temperatura
-                        </span>
-
-                        <strong>
-                            ${temperatura}
-                        </strong>
-
+                    <div>
+                        <small>Data de nascimento</small>
+                        <strong id="data">Não informado</strong>
                     </div>
 
+                    <div>
+                        <small>Sexo</small>
+                        <strong id="sexo">Não informado</strong>
+                    </div>
 
-                    <div class="info">
+                    <div>
+                        <small>Atendimento</small>
+                        <strong id="tipo">Não informado</strong>
+                    </div>
 
-                        <span>
-                            Alergias
-                        </span>
+                    <div>
+                        <small>Responsável</small>
+                        <strong id="mae">Não informado</strong>
+                    </div>
 
-                        <strong>
-                            ${data.alergias || "Nenhuma"}
-                        </strong>
+                    <div>
+                        <small>Telefone</small>
+                        <strong id="telefone">Não informado</strong>
+                    </div>
 
+                    <div class="full">
+                        <small>Endereço</small>
+                        <strong id="endereco">Não informado</strong>
                     </div>
 
                 </div>
 
+            </section>
 
-                <span
-                    class="risk ${classeRisco}"
+            <section class="card">
+
+                <h2>
+                    🩹 Dados da triagem
+                </h2>
+
+                <div class="info-grid">
+
+                    <div>
+                        <small>Sintoma principal</small>
+                        <strong id="sintoma">Não informado</strong>
+                    </div>
+
+                    <div>
+                        <small>Temperatura</small>
+                        <strong id="temperatura">Não informada</strong>
+                    </div>
+
+                    <div>
+                        <small>Alergias</small>
+                        <strong id="alergias">Nenhuma</strong>
+                    </div>
+
+                    <div class="full">
+                        <small>Observações</small>
+                        <strong id="observacao">Nenhuma</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>
+                    👨‍⚕️ Consulta médica
+                </h2>
+
+                <div class="field">
+
+                    <label for="diagnostico">
+                        Diagnóstico
+                    </label>
+
+                    <textarea
+                        id="diagnostico"
+                        placeholder="Digite o diagnóstico..."
+                    ></textarea>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="prescricao">
+                        Prescrição / Medicação
+                    </label>
+
+                    <textarea
+                        id="prescricao"
+                        placeholder="Digite medicamentos, orientações e cuidados..."
+                    ></textarea>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="observacoesMedicas">
+                        Observações médicas
+                    </label>
+
+                    <textarea
+                        id="observacoesMedicas"
+                        placeholder="Outras informações da consulta..."
+                    ></textarea>
+
+                </div>
+
+                <button
+                    class="save-button"
+                    onclick="salvarConsulta()"
                 >
+                    Salvar consulta 💙
+                </button>
 
-                    Risco:
-                    ${data.risco || "Não informado"}
+            </section>
 
-                </span>
+            <section class="alta-card">
 
+                <div>
 
-                <div class="observacao">
+                    <h2>
+                        🏠 Alta médica
+                    </h2>
 
-                    <strong>
-                        Observações da triagem:
-                    </strong>
-
-                    <br><br>
-
-                    ${data.observacao || "Nenhuma"}
-
-                </div>
-
-            `;
-
-
-            carregarHistorico();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            div.innerHTML = `
-
-                <div class="error">
-
-                    ❌ Não foi possível carregar o paciente.
-
-                    <br><br>
-
-                    ${error.message}
-
-                </div>
-
-            `;
-
-        }
-
-    }
-
-
-    // =============================================
-    // SALVAR CONSULTA
-    // =============================================
-
-    async function salvarConsulta() {
-
-        if (!pacienteAtual) {
-
-            alert(
-                "Paciente não carregado."
-            );
-
-            return;
-
-        }
-
-
-        const diagnostico =
-            document
-                .getElementById(
-                    "diagnostico"
-                )
-                .value
-                .trim();
-
-
-        const medicacao =
-            document
-                .getElementById(
-                    "medicacao"
-                )
-                .value
-                .trim();
-
-
-        const observacoes =
-            document
-                .getElementById(
-                    "observacoes"
-                )
-                .value
-                .trim();
-
-
-        if (!diagnostico) {
-
-            alert(
-                "Informe o diagnóstico."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/consulta",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body: JSON.stringify({
-
-                            pacienteId:
-                                pacienteAtual.id,
-
-                            diagnostico:
-                                diagnostico,
-
-                            medicacao:
-                                medicacao,
-
-                            observacoes:
-                                observacoes
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.erro ||
-                    "Erro ao salvar consulta."
-                );
-
-            }
-
-
-            document
-                .getElementById(
-                    "sucessoConsulta"
-                )
-                .style.display =
-                "block";
-
-
-            document
-                .getElementById(
-                    "diagnostico"
-                )
-                .value = "";
-
-
-            document
-                .getElementById(
-                    "medicacao"
-                )
-                .value = "";
-
-
-            document
-                .getElementById(
-                    "observacoes"
-                )
-                .value = "";
-
-
-            carregarHistorico();
-
-
-            alert(
-                "✓ Consulta salva com sucesso!"
-            );
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            alert(
-                "Erro ao salvar consulta:\n\n" +
-                error.message
-            );
-
-        }
-
-    }
-
-
-    // =============================================
-    // HISTÓRICO
-    // =============================================
-
-    async function carregarHistorico() {
-
-        if (!pacienteId) {
-            return;
-        }
-
-
-        const div =
-            document.getElementById(
-                "historico"
-            );
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `/paciente/${pacienteId}/consultas`
-                );
-
-
-            const consultas =
-                await response.json();
-
-
-            if (
-                !Array.isArray(consultas) ||
-                consultas.length === 0
-            ) {
-
-                div.innerHTML = `
-
-                    <p style="color:#8993a5">
-                        Nenhuma consulta registrada.
+                    <p>
+                        Finalize o atendimento e libere o paciente.
                     </p>
 
-                `;
+                </div>
+
+                <button
+                    onclick="mostrarAlta()"
+                    class="alta-button"
+                >
+                    Dar alta
+                </button>
+
+            </section>
+
+            <section
+                id="formAlta"
+                class="card alta-form"
+                style="display:none;"
+            >
+
+                <h2>
+                    📝 Formulário de alta
+                </h2>
+
+                <div class="field">
+
+                    <label for="motivoAlta">
+                        Motivo da alta
+                    </label>
+
+                    <input
+                        id="motivoAlta"
+                        type="text"
+                        placeholder="Ex.: melhora do quadro"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="observacaoAlta">
+                        Orientações
+                    </label>
+
+                    <textarea
+                        id="observacaoAlta"
+                        placeholder="Digite as orientações para o paciente..."
+                    ></textarea>
+
+                </div>
+
+                <button
+                    class="confirm-alta"
+                    onclick="darAlta()"
+                >
+                    Confirmar alta ✓
+                </button>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const pacienteId =
+            params.get("id");
+
+        let pacienteAtual = null;
+
+
+        async function carregarPaciente() {
+
+            if (!pacienteId) {
+
+                mostrarErro(
+                    "Paciente não informado."
+                );
 
                 return;
 
             }
 
+            try {
 
-            div.innerHTML = "";
+                const response =
+                    await fetch("/triagens");
 
+                if (!response.ok) {
 
-            consultas
-                .slice()
-                .reverse()
-                .forEach(
-                    consulta => {
+                    throw new Error(
+                        "Erro ao carregar os pacientes."
+                    );
 
-                        const data =
-                            new Date(
-                                consulta.createdAt
-                            )
-                            .toLocaleString(
-                                "pt-BR"
-                            );
+                }
 
+                const pacientes =
+                    await response.json();
 
-                        div.innerHTML += `
+                pacienteAtual =
+                    pacientes.find(
+                        paciente =>
+                            String(paciente.id) ===
+                            String(pacienteId)
+                    );
 
-                            <div
-                                class="consulta-historico"
-                            >
+                if (!pacienteAtual) {
 
-                                <strong>
-                                    Diagnóstico:
-                                    ${consulta.diagnostico}
-                                </strong>
+                    mostrarErro(
+                        "Paciente não encontrado."
+                    );
 
-                                <span>
-                                    Medicação:
-                                    ${consulta.medicacao || "Nenhuma"}
-                                </span>
+                    return;
 
-                                <span>
-                                    Observações:
-                                    ${consulta.observacoes || "Nenhuma"}
-                                </span>
+                }
 
-                                <span>
-                                    Data:
-                                    ${data}
-                                </span>
-
-                            </div>
-
-                        `;
-
-                    }
+                preencherDados(
+                    pacienteAtual
                 );
 
+                document
+                    .getElementById("loading")
+                    .style.display = "none";
 
-        } catch (error) {
+                document
+                    .getElementById("conteudo")
+                    .style.display = "block";
 
-            console.error(error);
+            } catch (error) {
 
-            div.innerHTML = `
-                <p style="color:#c62828">
-                    Erro ao carregar histórico.
-                </p>
-            `;
+                console.error(error);
 
-        }
-
-    }
-
-
-    // =============================================
-    // DATA ATUAL
-    // =============================================
-
-    function colocarDataAtual() {
-
-        const hoje =
-            new Date();
-
-
-        const ano =
-            hoje.getFullYear();
-
-
-        const mes =
-            String(
-                hoje.getMonth() + 1
-            ).padStart(2, "0");
-
-
-        const dia =
-            String(
-                hoje.getDate()
-            ).padStart(2, "0");
-
-
-        document
-            .getElementById(
-                "dataAlta"
-            )
-            .value =
-            `${ano}-${mes}-${dia}`;
-
-    }
-
-
-    // =============================================
-    // DAR ALTA
-    // =============================================
-
-    async function darAlta() {
-
-        if (!pacienteAtual) {
-
-            alert(
-                "Paciente não carregado."
-            );
-
-            return;
-
-        }
-
-
-        const motivo =
-            document
-                .getElementById(
-                    "motivoAlta"
-                )
-                .value
-                .trim();
-
-
-        const data =
-            document
-                .getElementById(
-                    "dataAlta"
-                )
-                .value;
-
-
-        const observacao =
-            document
-                .getElementById(
-                    "observacaoAlta"
-                )
-                .value
-                .trim();
-
-
-        if (!motivo) {
-
-            alert(
-                "Informe o motivo da alta."
-            );
-
-            return;
-
-        }
-
-
-        if (!data) {
-
-            alert(
-                "Informe a data da alta."
-            );
-
-            return;
-
-        }
-
-
-        const confirmar =
-            confirm(
-                "Deseja realmente dar alta para " +
-                pacienteAtual.nome +
-                "?"
-            );
-
-
-        if (!confirmar) {
-
-            return;
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/alta",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body: JSON.stringify({
-
-                            pacienteId:
-                                pacienteAtual.id,
-
-                            motivo:
-                                motivo,
-
-                            observacao:
-                                observacao,
-
-                            data:
-                                data
-
-                        })
-
-                    }
-                );
-
-
-            const result =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    result.erro ||
-                    "Erro ao registrar alta."
+                mostrarErro(
+                    "Erro ao conectar com o servidor."
                 );
 
             }
 
+        }
 
-            alert(
-                "✓ ALTA REALIZADA!\n\n" +
-                "Paciente: " +
-                pacienteAtual.nome +
-                "\nStatus: LIBERADO"
-            );
 
+        function preencherDados(paciente) {
+
+            const nome =
+                paciente.nome ||
+                "Paciente";
+
+            document
+                .getElementById("nomePaciente")
+                .textContent = nome;
+
+            document
+                .getElementById("avatar")
+                .textContent =
+                    nome
+                        .charAt(0)
+                        .toUpperCase();
+
+            document
+                .getElementById("cpf")
+                .textContent =
+                    paciente.cpf ||
+                    "Não informado";
+
+            document
+                .getElementById("data")
+                .textContent =
+                    paciente.data ||
+                    "Não informado";
+
+            document
+                .getElementById("sexo")
+                .textContent =
+                    paciente.sexo ||
+                    "Não informado";
+
+            document
+                .getElementById("tipo")
+                .textContent =
+                    paciente.tipo ||
+                    "Não informado";
+
+            document
+                .getElementById("mae")
+                .textContent =
+                    paciente.nomedamae ||
+                    "Não informado";
+
+            document
+                .getElementById("telefone")
+                .textContent =
+                    paciente.telefone ||
+                    "Não informado";
+
+            document
+                .getElementById("endereco")
+                .textContent =
+                    paciente.endereco ||
+                    "Não informado";
+
+            document
+                .getElementById("sintoma")
+                .textContent =
+                    paciente.sintoma ||
+                    "Não informado";
+
+            document
+                .getElementById("temperatura")
+                .textContent =
+                    paciente.temperatura !== null &&
+                    paciente.temperatura !== undefined &&
+                    paciente.temperatura !== ""
+                        ? paciente.temperatura + " °C"
+                        : "Não informada";
+
+            document
+                .getElementById("alergias")
+                .textContent =
+                    paciente.alergias ||
+                    "Nenhuma informada";
+
+            document
+                .getElementById("observacao")
+                .textContent =
+                    paciente.observacao ||
+                    "Nenhuma";
+
+            const risco =
+                String(
+                    paciente.risco ||
+                    "verde"
+                ).toLowerCase();
+
+            const riscoElement =
+                document.getElementById(
+                    "risco"
+                );
+
+            riscoElement.textContent =
+                risco.toUpperCase();
+
+            riscoElement.className =
+                "risk " + risco;
+
+        }
+
+
+        async function salvarConsulta() {
+
+            if (!pacienteAtual) {
+
+                alert(
+                    "Paciente não carregado."
+                );
+
+                return;
+
+            }
+
+            const diagnostico =
+                document
+                    .getElementById("diagnostico")
+                    .value
+                    .trim();
+
+            const prescricao =
+                document
+                    .getElementById("prescricao")
+                    .value
+                    .trim();
+
+            const observacoes =
+                document
+                    .getElementById(
+                        "observacoesMedicas"
+                    )
+                    .value
+                    .trim();
+
+            if (!diagnostico) {
+
+                alert(
+                    "Digite o diagnóstico."
+                );
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch("/consulta", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            paciente:
+                                pacienteAtual.nome,
+
+                            diagnostico,
+
+                            prescricao,
+
+                            observacoes,
+
+                            triagem:
+                                pacienteAtual
+
+                        })
+
+                    });
+
+                const data =
+                    await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.erro ||
+                        "Erro ao salvar consulta."
+                    );
+
+                }
+
+                alert(
+                    "✓ Consulta salva com sucesso!"
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Erro ao salvar consulta.\n\n" +
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        function mostrarAlta() {
+
+            const form =
+                document.getElementById(
+                    "formAlta"
+                );
+
+            form.style.display =
+                form.style.display === "none"
+                    ? "block"
+                    : "none";
+
+        }
+
+
+        async function darAlta() {
+
+            if (!pacienteAtual) {
+
+                alert(
+                    "Paciente não carregado."
+                );
+
+                return;
+
+            }
+
+            const motivo =
+                document
+                    .getElementById("motivoAlta")
+                    .value
+                    .trim();
+
+            const observacao =
+                document
+                    .getElementById("observacaoAlta")
+                    .value
+                    .trim();
+
+            if (!motivo) {
+
+                alert(
+                    "Informe o motivo da alta."
+                );
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch("/alta", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            paciente:
+                                pacienteAtual.nome,
+
+                            motivo,
+
+                            observacao,
+
+                            data:
+                                new Date()
+                                    .toISOString()
+                                    .split("T")[0]
+
+                        })
+
+                    });
+
+                const data =
+                    await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.erro ||
+                        "Erro ao dar alta."
+                    );
+
+                }
+
+                alert(
+                    "✓ Paciente recebeu alta com sucesso!"
+                );
+
+                window.location.href =
+                    "/medico.html";
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Erro ao realizar alta.\n\n" +
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        function mostrarErro(mensagem) {
+
+            const loading =
+                document.getElementById(
+                    "loading"
+                );
+
+            loading.className =
+                "message error-message";
+
+            loading.innerHTML =
+                "❌ " + mensagem;
+
+        }
+
+
+        function voltar() {
 
             window.location.href =
                 "/medico.html";
 
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            alert(
-                "Erro ao registrar alta:\n\n" +
-                error.message
-            );
-
         }
 
-    }
 
+        carregarPaciente();
 
-    // =============================================
-    // INICIALIZAÇÃO
-    // =============================================
-
-    colocarDataAtual();
-
-    carregarPaciente();
-
-</script>
+    </script>
 
 </body>
 
