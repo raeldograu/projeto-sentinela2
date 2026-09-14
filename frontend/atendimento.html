@@ -1,55 +1,622 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title> <link rel="stylesheet" href="css/atendimento.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cadastro do Paciente</title>
+<style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e9f8ff,
+            #f5f0ff
+        );
+
+    color: #29364d;
+
+    padding: 25px;
+}
+
+.page-decoration {
+    position: fixed;
+
+    opacity: 0.08;
+
+    font-size: 90px;
+
+    pointer-events: none;
+}
+
+.decoration-one {
+    top: 30px;
+    left: 30px;
+}
+
+.decoration-two {
+    bottom: 40px;
+    right: 50px;
+}
+
+.container {
+    width: 100%;
+    max-width: 850px;
+
+    margin: auto;
+
+    position: relative;
+}
+
+.header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.header-icon {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 22px;
+
+    background: #dff3ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 34px;
+}
+
+.header span {
+    color: #6686dd;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.header h1 {
+    margin-top: 4px;
+
+    font-size: 30px;
+}
+
+.header p {
+    color: #7b8799;
+
+    margin-top: 5px;
+}
+
+.card {
+    background: white;
+
+    border-radius: 24px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(57, 82, 115, 0.1);
+}
+
+.card h2 {
+    margin-bottom: 20px;
+
+    font-size: 20px;
+
+    color: #435fd0;
+}
+
+.grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 17px;
+}
+
+.field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 13px;
+
+    font-weight: bold;
+
+    color: #536176;
+}
+
+input,
+select {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 2px solid #e5ebf2;
+
+    border-radius: 14px;
+
+    background: #f9fbfd;
+
+    outline: none;
+
+    font-size: 14px;
+
+    color: #2d3b50;
+}
+
+input:focus,
+select:focus {
+    border-color: #7392ee;
+
+    background: white;
+}
+
+.main-button {
+    width: 100%;
+
+    border: none;
+
+    padding: 17px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #638bf1,
+            #7b68db
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(83, 106, 214, 0.25);
+}
+
+.main-button:hover {
+    transform: translateY(-2px);
+}
+
+#mensagem {
+    margin-top: 18px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    display: none;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+#mensagem.success,
+#mensagem.error {
+    display: block;
+}
+
+.success {
+    background: #e5faef;
+
+    color: #258153;
+}
+
+.error {
+    background: #ffe9e9;
+
+    color: #c44343;
+}
+
+footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    color: #8995a6;
+
+    font-size: 12px;
+}
+
+@media(max-width: 650px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+}</style>
+
 </head>
+
 <body>
 
-    <div class="container">
-        <h2>Atendimento</h2> 
+    <div class="page-decoration decoration-one">🩹</div>
+    <div class="page-decoration decoration-two">♡</div>
 
-        <input id="nome" placeholder="nome">
-          <input id="cpf" placeholder="CPF">
+    <main class="container">
 
-          <select  id="tipo">
+        <header class="header">
 
-            <option >convenio</option>
-            
-              <option >particular</option>
+            <div class="header-icon">
+                👋
+            </div>
 
-          </select>
+            <div>
+                <span>ATENDIMENTO</span>
 
-          <input type="file" id="foto">
+                <h1>
+                    Cadastro do paciente
+                </h1>
 
-          <button onclick="cadastrar()">cadastrar</button> 
-      </div> 
-      <script>
-        function cadastrar(){
-            fetch("http://localhost:3000/atendimento",{ 
-                method:"POST", 
-                headers:{"Costent-Type":"application/json"}, 
-                body: JSON.stringify({
-                    
-                nome  : nome.value, 
-                CPF: CPF.value, 
-                data : data.value, 
-                sexo: sexo.value,
-                nomedamae: nomedamae.value, 
-                estadocivil : estadocivil.value,
-                Endereço: Endereço.value, 
-                Telefone : Telefone.value,
-                Email: Email.value, 
-                contadodeermegencia : contadodeermegencia.value,
-                    
-                    
-                })
+                <p>
+                    Vamos registrar algumas informações importantes.
+                </p>
+            </div>
 
-            }); 
-            alert("Paciente enviado para triagem"); 
-        } 
+        </header>
 
-      </script>
-    </body>
-    </html>
+        <form id="cadastroForm">
+
+            <section class="card">
+
+                <h2>👦 Dados do paciente</h2>
+
+                <div class="grid">
+
+                    <div class="field full">
+
+                        <label for="nome">
+                            Nome completo
+                        </label>
+
+                        <input
+                            id="nome"
+                            type="text"
+                            placeholder="Nome do paciente"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="cpf">
+                            CPF
+                        </label>
+
+                        <input
+                            id="cpf"
+                            type="text"
+                            placeholder="000.000.000-00"
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="data">
+                            Data de nascimento
+                        </label>
+
+                        <input
+                            id="data"
+                            type="date"
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="sexo">
+                            Sexo
+                        </label>
+
+                        <select id="sexo">
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="Masculino">
+                                Masculino
+                            </option>
+
+                            <option value="Feminino">
+                                Feminino
+                            </option>
+
+                            <option value="Outro">
+                                Outro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="tipo">
+                            Atendimento
+                        </label>
+
+                        <select id="tipo">
+
+                            <option value="convenio">
+                                Convênio
+                            </option>
+
+                            <option value="particular">
+                                Particular
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field full">
+
+                        <label for="nomedamae">
+                            Nome da mãe / responsável
+                        </label>
+
+                        <input
+                            id="nomedamae"
+                            type="text"
+                            placeholder="Nome do responsável"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>🏠 Contato e endereço</h2>
+
+                <div class="grid">
+
+                    <div class="field full">
+
+                        <label for="endereco">
+                            Endereço
+                        </label>
+
+                        <input
+                            id="endereco"
+                            type="text"
+                            placeholder="Rua, número, bairro..."
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="telefone">
+                            Telefone
+                        </label>
+
+                        <input
+                            id="telefone"
+                            type="tel"
+                            placeholder="(00) 00000-0000"
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label for="email">
+                            E-mail
+                        </label>
+
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="email@exemplo.com"
+                        >
+
+                    </div>
+
+                    <div class="field full">
+
+                        <label for="contatoEmergencia">
+                            Contato de emergência
+                        </label>
+
+                        <input
+                            id="contatoEmergencia"
+                            type="text"
+                            placeholder="Nome e telefone"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <button
+                type="submit"
+                class="main-button"
+            >
+                Cadastrar e enviar para triagem 🩺
+            </button>
+
+        </form>
+
+        <div id="mensagem"></div>
+
+        <footer>
+            Sentinela Kids • Atendimento
+        </footer>
+
+    </main>
+
+    <script>
+
+        const form =
+            document.getElementById("cadastroForm");
+
+        form.addEventListener("submit", cadastrar);
+
+        async function cadastrar(event) {
+
+            event.preventDefault();
+
+            const mensagem =
+                document.getElementById("mensagem");
+
+            const paciente = {
+
+                nome:
+                    document.getElementById("nome").value.trim(),
+
+                cpf:
+                    document.getElementById("cpf").value.trim(),
+
+                data:
+                    document.getElementById("data").value,
+
+                sexo:
+                    document.getElementById("sexo").value,
+
+                tipo:
+                    document.getElementById("tipo").value,
+
+                nomedamae:
+                    document.getElementById("nomedamae").value.trim(),
+
+                endereco:
+                    document.getElementById("endereco").value.trim(),
+
+                telefone:
+                    document.getElementById("telefone").value.trim(),
+
+                email:
+                    document.getElementById("email").value.trim(),
+
+                contatoEmergencia:
+                    document
+                        .getElementById("contatoEmergencia")
+                        .value
+                        .trim()
+
+            };
+
+            if (!paciente.nome) {
+
+                alert("Digite o nome do paciente.");
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch("/atendimento", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(paciente)
+
+                    });
+
+                const data =
+                    await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.erro ||
+                        "Erro ao cadastrar paciente."
+                    );
+
+                }
+
+                mensagem.className = "success";
+
+                mensagem.innerHTML =
+                    "✓ Paciente cadastrado e enviado para a triagem!";
+
+                form.reset();
+
+            } catch (error) {
+
+                console.error(error);
+
+                mensagem.className = "error";
+
+                mensagem.innerHTML =
+                    "❌ Erro ao conectar com o servidor.<br>" +
+                    error.message;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
