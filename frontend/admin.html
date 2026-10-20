@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
 
+    <div class="conteiner">
+        <a href="index.html" style="text-decoration: none;color: rgb(32, 122, 196);
+        font-size: 14px; display: inline-block;margin-bottom: 12px;">voltar parar o login</a>
+
+    <h2>cadastrar usuario</h2>
+
+    <form id="formUsuario">
+
+        <input type="password" name="usuario" placeholder="nome do usuario(login)" required>
+        <input type="password" name="senha" placeholder="senha do usuario" required>
+
+        <select  id="tipo"required>
+
+            <option value="">Selecione o setor</option>
+            <option value="atendimento">atendimento</option>
+            <option value="triagem">triagem</option>
+            <option value="medico">medico</option>
+
+        </select>
+      
+        <button type="submit" >cadastrar usuario</button>
+
+    </form>
+    
+
+    <hr style="margin: 25px 0;border-top: 1px solid #ccc; border:none;">
+
+    <h3 >usuario cadastrado</h3>
+    <div id="ListarUsuarios"></div>
+
+    <script >
+        document.getElementById('formUsuario').addEventListener('submit', function(e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            const tipo = document.getElementById('tipo').value;
+
+            // Aqui você pode adicionar a lógica para enviar os dados para o servidor
+            fetch('/Usuário', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ usuario, senha, tipo })
+            })
+          
+
+            // Limpar o formulário após o envio
+           .then(res=>.json())
+        });
+
+
+
+
+    </script>
+    
