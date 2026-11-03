@@ -57,11 +57,52 @@
           
 
             // Limpar o formulário após o envio
-           .then(res=>.json())
+           .then(res=> res.json())
+           .then(dados => {
+            if(dados.erro){ alert("erro" +dados.erro);}
+            else{
+                alert("usuario cadastrado com sucesso");
+                document.getElementById('formUsuario').reset();
+                carregarUsuarios(); // Atualiza a lista de usuários após o cadastro
+            }
         });
+    
+        });
+
+
+        function carregarUsuarios() {
+            fetch('/Usuário')
+                .then(res => res.json())
+                .then(usuarios => {
+                     const div = document.getElementById('ListarUsuarios');
+
+                    div.innerHTML += ""; // Limpa a lista antes de adicionar os usuários
+
+                    usuarios.forEach(usuario => {
+                     div.innerHTML += `
+                     <div class="card">
+                        <b>usuario: </b> ${u.usuario}|
+                        <b>setor: </b> ${u.tipo}
+                        </div>`;
+                    });
+                });
+        }
+
+        carregarUsuarios(); // Carrega a lista de usuários ao carregar a página
 
 
 
 
     </script>
     
+    
+    
+    
+    
+    
+    </div>
+
+
+
+</body>
+</html>
