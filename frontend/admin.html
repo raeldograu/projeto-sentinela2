@@ -1,108 +1,215 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+    <title>Sentinela Kids - Administrador</title>
 
-    <div class="conteiner">
-        <a href="index.html" style="text-decoration: none;color: rgb(32, 122, 196);
-        font-size: 14px; display: inline-block;margin-bottom: 12px;">voltar parar o login</a>
-
-    <h2>cadastrar usuario</h2>
-
-    <form id="formUsuario">
-
-        <input type="password" name="usuario" placeholder="nome do usuario(login)" required>
-        <input type="password" name="senha" placeholder="senha do usuario" required>
-
-        <select  id="tipo"required>
-
-            <option value="">Selecione o setor</option>
-            <option value="atendimento">atendimento</option>
-            <option value="triagem">triagem</option>
-            <option value="medico">medico</option>
-
-        </select>
-      
-        <button type="submit" >cadastrar usuario</button>
-
-    </form>
-    
-
-    <hr style="margin: 25px 0;border-top: 1px solid #ccc; border:none;">
-
-    <h3 >usuario cadastrado</h3>
-    <div id="ListarUsuarios"></div>
-
-    <script >
-        document.getElementById('formUsuario').addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário
-
-            const usuario = document.getElementById('usuario').value;
-            const senha = document.getElementById('senha').value;
-            const tipo = document.getElementById('tipo').value;
-
-            // Aqui você pode adicionar a lógica para enviar os dados para o servidor
-            fetch('/Usuário', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ usuario, senha, tipo })
-            })
-          
-
-            // Limpar o formulário após o envio
-           .then(res=> res.json())
-           .then(dados => {
-            if(dados.erro){ alert("erro" +dados.erro);}
-            else{
-                alert("usuario cadastrado com sucesso");
-                document.getElementById('formUsuario').reset();
-                carregarUsuarios(); // Atualiza a lista de usuários após o cadastro
-            }
-        });
-    
-        });
-
-
-        function carregarUsuarios() {
-            fetch('/Usuário')
-                .then(res => res.json())
-                .then(usuarios => {
-                     const div = document.getElementById('ListarUsuarios');
-
-                    div.innerHTML += ""; // Limpa a lista antes de adicionar os usuários
-
-                    usuarios.forEach(usuario => {
-                     div.innerHTML += `
-                     <div class="card">
-                        <b>usuario: </b> ${u.usuario}|
-                        <b>setor: </b> ${u.tipo}
-                        </div>`;
-                    });
-                });
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        carregarUsuarios(); // Carrega a lista de usuários ao carregar a página
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 30px 15px;
+            background: linear-gradient(135deg, #e8f7ff, #f4efff);
+            color: #29364d;
+        }
 
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(57,82,115,.12);
+        }
 
+        h2, h3 {
+            color: #4267d5;
+            margin-bottom: 20px;
+        }
 
+        input, select {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 2px solid #e5ebf2;
+            border-radius: 12px;
+            font-size: 15px;
+        }
 
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6388f3, #8069df);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f5f8ff;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #4267d5;
+            text-decoration: none;
+        }
+
+        #mensagem {
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <a href="index.html" class="voltar">← Voltar para o login</a>
+
+        <h2>Cadastro de usuários</h2>
+
+        <form id="formUsuario">
+
+            <input
+                type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Nome do usuário (login)"
+                autocomplete="off"
+                required
+            >
+
+            <input
+                type="password"
+                id="senha"
+                name="senha"
+                placeholder="Senha do usuário"
+                autocomplete="new-password"
+                required
+            >
+
+            <select id="tipo" name="tipo" required>
+                <option value="">Selecione o setor</option>
+                <option value="atendimento">Atendimento</option>
+                <option value="triagem">Triagem</option>
+                <option value="medico">Médico</option>
+                <option value="almoxarifado">Almoxarifado</option>
+            </select>
+
+            <button type="submit">Cadastrar usuário</button>
+
+        </form>
+
+        <p id="mensagem" role="status"></p>
+
+        <hr style="margin:25px 0;">
+
+        <h3>Usuários cadastrados</h3>
+
+        <div id="ListarUsuarios">
+            Carregando usuários...
+        </div>
+
+    </main>
+
+    <script>
+        const form = document.getElementById("formUsuario");
+        const lista = document.getElementById("ListarUsuarios");
+        const mensagem = document.getElementById("mensagem");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const usuario = document.getElementById("usuario").value.trim();
+            const senha = document.getElementById("senha").value;
+            const tipo = document.getElementById("tipo").value;
+
+            if (!usuario || !senha || !tipo) {
+                mensagem.textContent = "Preencha todos os campos.";
+                return;
+            }
+
+            try {
+                const resposta = await fetch("/Usuário", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ usuario, senha, tipo })
+                });
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok || dados.erro) {
+                    throw new Error(dados.erro || "Erro ao cadastrar usuário.");
+                }
+
+                mensagem.textContent = "Usuário cadastrado com sucesso!";
+                form.reset();
+
+                await carregarUsuarios();
+
+            } catch (erro) {
+                console.error(erro);
+                mensagem.textContent = "Erro: " + erro.message;
+            }
+        });
+
+        async function carregarUsuarios() {
+            lista.textContent = "Carregando usuários...";
+
+            try {
+                const resposta = await fetch("/Usuário");
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível carregar os usuários.");
+                }
+
+                const usuarios = await resposta.json();
+
+                lista.replaceChildren();
+
+                if (!Array.isArray(usuarios) || usuarios.length === 0) {
+                    lista.textContent = "Nenhum usuário cadastrado.";
+                    return;
+                }
+
+                usuarios.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    const nome = document.createElement("p");
+                    nome.textContent = "Usuário: " + item.usuario;
+
+                    const setor = document.createElement("p");
+                    setor.textContent = "Setor: " + item.tipo;
+
+                    card.append(nome, setor);
+                    lista.appendChild(card);
+                });
+
+            } catch (erro) {
+                console.error(erro);
+                lista.textContent = erro.message;
+            }
+        }
+
+        carregarUsuarios();
     </script>
-    
-    
-    
-    
-    
-    
-    </div>
-
-
-
 </body>
 </html>
