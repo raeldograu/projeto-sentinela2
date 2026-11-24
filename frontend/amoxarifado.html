@@ -1,109 +1,419 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almoxarifado Hospitalar — Amandinha Hospital</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
-    <header class="navbar">
-        <div class="nav-brand">
-            <div class="logo-icon"></div>
-            <div>
-                <h1>Hospital Pro - Almoxarifado</h1>
-                <span>Gestão de entrada e Controle de Estoque</span>
-            </div>
+
+  <div class="app-wrapper">
+    <div id="sidebar-container"></div>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="btn-toggle-sidebar" id="btnToggleSidebar">☰</button>
+          <div class="page-title">
+            <h2>Almoxarifado Central & Gestão de Insumos</h2>
+            <p>Controle de estoque de materiais, requisições por setor e reposição hospitalar</p>
+          </div>
         </div>
-        <div class="nav-user">
-            <span class="user-pill" id="nomeUsuario">Almoxarifado</span>
-            <a href="index.html" class="btn-nav">Sair</a>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="abrirModalNovoMaterial()">
+            <span>➕</span> <span>Novo Material</span>
+          </button>
+          <button class="btn btn-outline" onclick="abrirModalRequisicao()">
+            <span>📦</span> <span>Entrada / Requisição</span>
+          </button>
         </div>
-    </header>
+      </header>
 
-    <div class="container">
-
-       <div class="alerta-estoque" id="alertEstoque" style="display:none;">
-        <strong>Atenção!</strong> <span id="alertaTexto"></span>
-       </div>
-
-       <div class="stats-bar">
-        <div class="stat-card">
-        <div class="stat-icon purple">
-            <div>
-                <div class="stat-value" id="statItens">-</div>
-                <div class="stat-label">Tipos Cadastrados</div>
+      <div class="app-content">
+        <!-- Indicadores do Almoxarifado -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon pink">📦</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statTotalItens">0</div>
+              <div class="stat-label">Tipos Cadastrados</div>
             </div>
           </div>
           <div class="stat-card">
-            <div>
-                <div class="stat-value" id="statOK">-</div>
-                <div class="stat-label">Estoque Normal</div>
+            <div class="stat-icon green">✅</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statEstoqueOK" style="color: var(--success);">0</div>
+              <div class="stat-label">Estoque Normal</div>
             </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon orange"></div>
-                <div>
-                    <div class="stat-value" id="statBaixo">-</div>
-                    <div class="stat-label">Estoque Baixo (0-10)</div>
-                </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">⚠️</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statEstoqueBaixo" style="color: var(--warning);">0</div>
+              <div class="stat-label">Estoque Baixo (&le; Mínimo)</div>
             </div>
-        <div class="stat-card">
-            <div class="stat-icon red"></div>
-                <div>
-                    <div class="stat-value" id="statZerado">-</div>
-                    <div class="stat-label">Zerados / Esgotados</div>
-                 </div>
-             </div>
-        </div>
-        
-        <div class="main-grid">
-
-            <div>
-                <div class="card">
-                 <div class="card-header">
-                    <h2>Entrada de Medicamentos</h2>
-                 </div>
-                 <div class="card-body">
-
-                    <!-- Tabs: Novo ou Repor -->
-                     <div class="entrada-tabs">
-                        <button class="tab-btn active" id="tabNovo" onclick="setTab('setTabNovo')">Novo Medicamento</button>
-                        <button class="tab-btn" id="tabRepor" onclick="setTab('repor')">Repor Existente</button>
-
-                        <div id="PainelNovo">
-                            <div class="form-group">
-                                <label for="novoNome">Nome do Medicamento:</label>
-                                <input type="text" id="emNome" class="form-control" placeholder="Ex: Paracetamol 500mg" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="emQtd">Quantidade:
-                                    <small>(unidades a adicionar)</small></label>
-                                <input type="number" id="emQtd" class="form-control" value="10" min="1">
-                            </div>
-                            <div class="form-group">
-                                <label for="emUnidade">Unidade:</label>
-                                <select id="emUnidade" class="form-control">
-                                    <option value="comprimidos">Comprimidos</option>
-                                    <option value="capsulas">Capsulas</option>
-                                    <option value="frascos">Frascos</option>
-                                    <option value="ampolas">Ampolas</option>
-                                    <option value="sachês">Sachês</option>
-                                    <option value="unidades">Unidades</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="emValidade">Validade:</label>
-                                <input type="date" id="emValidade" class="form-control">
-                            </div>
-                        </div>
-                        <div>
-                     </div>
-                 </div>
-                </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">⛔</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statEstoqueZerado" style="color: var(--danger);">0</div>
+              <div class="stat-label">Itens Zerados / Esgotados</div>
             </div>
+          </div>
         </div>
+
+        <!-- Tabela de Materiais -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>📋</span>
+              <span>Catálogo & Saldos de Almoxarifado</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="filtroAlmox" placeholder="🔍 Filtrar material, categoria ou lote..." oninput="filtrarMateriais()" style="height: 36px; width: 280px;">
+              <button class="btn btn-outline btn-sm" onclick="carregarAlmoxarifado()">🔄 Atualizar</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Material / Insumo</th>
+                  <th>Categoria</th>
+                  <th>Lote</th>
+                  <th>Unidade</th>
+                  <th>Localização</th>
+                  <th>Saldo Disponível</th>
+                  <th>Estoque Mínimo</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaMateriaisBody">
+                <tr>
+                  <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                    Carregando estoque de materiais...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Histórico de Requisições e Entradas -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🚚</span>
+              <span>Histórico de Movimentações & Requisições Setoriais</span>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Tipo</th>
+                  <th>Material</th>
+                  <th>Quantidade</th>
+                  <th>Setor Solicitante</th>
+                  <th>Responsável</th>
+                  <th>Motivo / Documento</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaMovAlmoxBody">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">
+                    Carregando movimentações do almoxarifado...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: CADASTRAR NOVO MATERIAL -->
+  <div class="modal-backdrop" id="modalNovoMaterial">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Cadastrar Material no Almoxarifado</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalNovoMaterial')">&times;</button>
+      </div>
+      <form id="formNovoMaterial" onsubmit="salvarNovoMaterial(event)">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group col-span-2">
+              <label for="matNome">Descrição do Material <span class="required">*</span></label>
+              <input type="text" id="matNome" placeholder="Ex: Cateter Intravenoso Periférico 20G" required>
+            </div>
+            <div class="form-group">
+              <label for="matCategoria">Categoria Hospitalar <span class="required">*</span></label>
+              <select id="matCategoria">
+                <option value="Insumos Médicos">Insumos Médicos</option>
+                <option value="Descartáveis">Descartáveis / EPIs</option>
+                <option value="Higiene e Desinfecção">Higiene e Desinfecção</option>
+                <option value="Equipamentos">Equipamentos / Aparelhos</option>
+                <option value="Escritório">Material de Escritório</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="matUnidade">Unidade de Medida</label>
+              <input type="text" id="matUnidade" placeholder="Ex: caixa c/ 50, pacote, unidade" value="unidade">
+            </div>
+            <div class="form-group">
+              <label for="matQtd">Quantidade Inicial em Estoque <span class="required">*</span></label>
+              <input type="number" id="matQtd" min="0" value="50" required>
+            </div>
+            <div class="form-group">
+              <label for="matEstoqueMin">Estoque Mínimo de Alerta</label>
+              <input type="number" id="matEstoqueMin" min="1" value="15" required>
+            </div>
+            <div class="form-group col-span-2">
+              <label for="matLocalizacao">Localização no Depósito</label>
+              <input type="text" id="matLocalizacao" placeholder="Ex: Corredor 2, Prateleira B, Estante 4">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalNovoMaterial')">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Cadastrar Material</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: MOVIMENTAÇÃO / REQUISIÇÃO POR SETOR -->
+  <div class="modal-backdrop" id="modalRequisicao">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Entrada / Requisição de Materiais</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalRequisicao')">&times;</button>
+      </div>
+      <form id="formRequisicao" onsubmit="salvarRequisicao(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="reqMaterialId">Material <span class="required">*</span></label>
+            <select id="reqMaterialId" required></select>
+          </div>
+          <div class="form-group">
+            <label for="reqTipo">Tipo de Movimentação <span class="required">*</span></label>
+            <select id="reqTipo" onchange="alternarCamposMov(this.value)">
+              <option value="saida">Saída (Requisição por Setor Hospitalar)</option>
+              <option value="entrada">Entrada (Recebimento / Compra com NF)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reqQtd">Quantidade <span class="required">*</span></label>
+            <input type="number" id="reqQtd" min="1" value="5" required>
+          </div>
+          <div class="form-group" id="grupoSetor">
+            <label for="reqSetor">Setor Solicitante</label>
+            <select id="reqSetor">
+              <option value="UTI Geral">UTI Geral</option>
+              <option value="Pronto Atendimento / Emergência">Pronto Atendimento / Emergência</option>
+              <option value="Centro Cirúrgico">Centro Cirúrgico</option>
+              <option value="Enfermarias">Enfermarias Adulto</option>
+              <option value="Maternidade / Pediatria">Maternidade / Pediatria</option>
+              <option value="Ambulatório de Especialidades">Ambulatório</option>
+            </select>
+          </div>
+          <div class="form-group" id="grupoFornecedor" style="display: none;">
+            <label for="reqFornecedor">Fornecedor / Nota Fiscal</label>
+            <input type="text" id="reqFornecedor" placeholder="Ex: Distribuidora Hospitalar SP - NF 44120">
+          </div>
+          <div class="form-group">
+            <label for="reqMotivo">Motivo / Justificativa</label>
+            <input type="text" id="reqMotivo" placeholder="Ex: Reposição semanal de estoque do setor" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modalRequisicao')">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Efetivar Movimentação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    checkPageAuth();
+    initAppLayout('almoxarifado');
+
+    let materiaisLista = [];
+
+    async function carregarAlmoxarifado() {
+      try {
+        const [resStats, resMateriais, resMovs] = await Promise.all([
+          apiFetch('/api/almoxarifado/stats'),
+          apiFetch('/api/almoxarifado/materiais'),
+          apiFetch('/api/almoxarifado/movimentacoes')
+        ]);
+
+        materiaisLista = resMateriais.materiais || [];
+
+        // Atualiza indicadores
+        document.getElementById('statTotalItens').textContent = resStats.total;
+        document.getElementById('statEstoqueOK').textContent = resStats.normais;
+        document.getElementById('statEstoqueBaixo').textContent = resStats.baixos;
+        document.getElementById('statEstoqueZerado').textContent = resStats.zerados;
+
+        renderizarMateriais(materiaisLista);
+        renderizarMovimentacoesAlmox(resMovs || []);
+      } catch (err) {
+        showToast('Erro ao carregar dados do almoxarifado.', 'danger');
+      }
+    }
+
+    function renderizarMateriais(lista) {
+      const tbody = document.getElementById('tabelaMateriaisBody');
+
+      if (!lista || lista.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum material encontrado no estoque.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = lista.map(m => {
+        const isBaixo = m.quantidade <= m.estoqueMinimo && m.quantidade > 0;
+        const isZerado = m.quantidade === 0;
+
+        let statusBadge = '<span class="badge badge-livre">Normal</span>';
+        if (isZerado) statusBadge = '<span class="badge badge-manchester badge-vermelho">ZERADO</span>';
+        else if (isBaixo) statusBadge = '<span class="badge badge-manchester badge-laranja">ESTOQUE BAIXO</span>';
+
+        return `
+          <tr>
+            <td><strong>${escapeHtml(m.nome)}</strong></td>
+            <td><span class="badge badge-info">${escapeHtml(m.categoria)}</span></td>
+            <td><code>${escapeHtml(m.lote || '--')}</code></td>
+            <td>${escapeHtml(m.unidade || 'un')}</td>
+            <td>${escapeHtml(m.localizacao || 'Almoxarifado Central')}</td>
+            <td><strong style="font-size: 15px; color: ${isZerado ? 'var(--danger)' : (isBaixo ? 'var(--warning)' : 'var(--navy)')};">${m.quantidade}</strong></td>
+            <td>${m.estoqueMinimo}</td>
+            <td>${statusBadge}</td>
+            <td style="text-align: right;">
+              <button class="btn btn-outline btn-sm" onclick="solicitarSaidaRapida('${m.id}', '${escapeHtml(m.nome)}')">
+                📤 Requisitar
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderizarMovimentacoesAlmox(movs) {
+      const tbody = document.getElementById('tabelaMovAlmoxBody');
+
+      if (!movs || movs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma movimentação registrada.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = movs.slice(0, 10).map(m => `
+        <tr>
+          <td>${formatDate(m.dataHora)}</td>
+          <td><span class="badge ${m.tipo === 'entrada' ? 'badge-livre' : 'badge-manchester badge-laranja'}">${m.tipo.toUpperCase()}</span></td>
+          <td><strong>${escapeHtml(m.materialNome)}</strong></td>
+          <td><strong>${m.quantidade} un</strong></td>
+          <td>${escapeHtml(m.setorDestino || '--')}</td>
+          <td>${escapeHtml(m.responsavel)}</td>
+          <td>${escapeHtml(m.motivo || '--')}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filtrarMateriais() {
+      const termo = document.getElementById('filtroAlmox').value.toLowerCase();
+      const filtrados = materiaisLista.filter(m =>
+        m.nome.toLowerCase().includes(termo) ||
+        m.categoria.toLowerCase().includes(termo) ||
+        (m.lote && m.lote.toLowerCase().includes(termo))
+      );
+      renderizarMateriais(filtrados);
+    }
+
+    function abrirModalNovoMaterial() {
+      document.getElementById('formNovoMaterial').reset();
+      openModal('modalNovoMaterial');
+    }
+
+    async function salvarNovoMaterial(e) {
+      e.preventDefault();
+      const payload = {
+        nome: document.getElementById('matNome').value.trim(),
+        categoria: document.getElementById('matCategoria').value,
+        unidade: document.getElementById('matUnidade').value.trim(),
+        quantidade: parseInt(document.getElementById('matQtd').value, 10),
+        estoqueMinimo: parseInt(document.getElementById('matEstoqueMin').value, 10),
+        localizacao: document.getElementById('matLocalizacao').value.trim()
+      };
+
+      try {
+        await apiFetch('/api/almoxarifado/materiais', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        showToast('Material cadastrado com sucesso no Almoxarifado!', 'success');
+        closeModal('modalNovoMaterial');
+        carregarAlmoxarifado();
+      } catch (err) {
+        showToast(err.message, 'danger');
+      }
+    }
+
+    function abrirModalRequisicao(materialPreSelecionadoId = null) {
+      const sel = document.getElementById('reqMaterialId');
+      sel.innerHTML = materiaisLista.map(m => `
+        <option value="${m.id}" ${materialPreSelecionadoId === m.id ? 'selected' : ''}>
+          ${escapeHtml(m.nome)} (Saldo: ${m.quantidade} ${escapeHtml(m.unidade || 'un')})
+        </option>
+      `).join('');
+      alternarCamposMov('saida');
+      openModal('modalRequisicao');
+    }
+
+    function solicitarSaidaRapida(id, nome) {
+      abrirModalRequisicao(id);
+    }
+
+    function alternarCamposMov(tipo) {
+      document.getElementById('grupoSetor').style.display = tipo === 'saida' ? 'block' : 'none';
+      document.getElementById('grupoFornecedor').style.display = tipo === 'entrada' ? 'block' : 'none';
+    }
+
+    async function salvarRequisicao(e) {
+      e.preventDefault();
+      const tipo = document.getElementById('reqTipo').value;
+      const payload = {
+        materialId: document.getElementById('reqMaterialId').value,
+        tipo: tipo,
+        quantidade: parseInt(document.getElementById('reqQtd').value, 10),
+        setorDestino: tipo === 'saida' ? document.getElementById('reqSetor').value : 'Almoxarifado Central',
+        motivo: document.getElementById('reqMotivo').value.trim(),
+        fornecedor: document.getElementById('reqFornecedor').value.trim()
+      };
+
+      try {
+        await apiFetch('/api/almoxarifado/movimentacoes', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        showToast('Movimentação de almoxarifado registrada com sucesso!', 'success');
+        closeModal('modalRequisicao');
+        carregarAlmoxarifado();
+      } catch (err) {
+        showToast(err.message, 'danger');
+      }
+    }
+
+    carregarAlmoxarifado();
+  </script>
 </body>
 </html>
